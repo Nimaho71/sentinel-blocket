@@ -1,0 +1,17 @@
+# Environments
+venv/
+.env
+
+# Databases
+*.db
+*.db-journal
+
+# Python
+__pycache__/
+*.pyc
+
+# Local test files
+blocket.txt
+search.txt
+example.txt
+test_scraper.py
