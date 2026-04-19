@@ -120,6 +120,7 @@ async def scrape_ad_details(page: Page, url: str, category_enum: str) -> Optiona
 
     try:
         # STRATEGY 1: Parse the hidden JSON-LD script (Highly Reliable)
+        # 1. Parse JSON-LD for Title, Price, Description, AND Image
         json_scripts = await page.locator('script[type="application/ld+json"]').all_inner_texts()
         for script_text in json_scripts:
             try:
@@ -127,11 +128,14 @@ async def scrape_ad_details(page: Page, url: str, category_enum: str) -> Optiona
                 if data.get("@type") == "Product":
                     ad_data["title"] = data.get("name", "")
                     ad_data["raw_description"] = data.get("description", "")
+                    # FIX: Get image from metadata
+                    if "image" in data:
+                        ad_data["main_image_url"] = data["image"]
+                    
                     offers = data.get("offers", {})
                     if isinstance(offers, dict) and "price" in offers:
                         ad_data["price_sek"] = int(offers["price"])
-            except json.JSONDecodeError:
-                continue
+            except: continue
 
         # STRATEGY 2: DOM Fallback (In case JSON-LD is missing)
         if not ad_data["title"]:

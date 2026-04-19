@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel-Blocket Deals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <header class="flex justify-between items-center mb-12 border-b border-gray-800 pb-6">
+            <h1 class="text-4xl font-bold text-red-500 tracking-tighter">SENTINEL<span class="text-white">BLOCKET</span></h1>
+            <div class="text-right">
+                <div class="text-gray-400 text-sm">AI Procurement Engine</div>
+                <div class="text-green-500 text-xs font-mono">STATUS: ACTIVE</div>
+            </div>
+        </header>
+
+        <div id="deals-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Deals will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        async function fetchDeals() {
+            try {
+                const response = await fetch('/api/deals');
+                const deals = await response.json();
+                const grid = document.getElementById('deals-grid');
+                grid.innerHTML = '';
+
+                if (deals.length === 0) {
+                    grid.innerHTML = '<div class="col-span-3 text-center py-20 text-gray-500 text-xl">No deals found yet. Run orchestrator.py to scrape data!</div>';
+                    return;
+                }
+
+                deals.forEach(deal => {
+                    const color = deal.score > 80 ? 'text-green-400' : deal.score > 50 ? 'text-yellow-400' : 'text-red-400';
+                    const card = `
+                        <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-red-500 transition-all shadow-2xl flex flex-col">
+
+                            <!-- IMAGE SECTION -->
+                            <div class="h-48 overflow-hidden bg-black flex items-center justify-center">
+                                <img src="${deal.image || 'https://via.placeholder.com/400x300?text=No+Image'}" 
+                                    class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity" 
+                                    alt="${deal.title}">
+                            </div>
+
+                            <div class="p-6 flex-grow">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="bg-gray-700 text-[10px] font-bold px-2 py-1 rounded text-gray-300 uppercase tracking-widest">${deal.item_type}</span>
+                                    <span class="text-3xl font-black ${color}">${deal.score}%</span>
+                                </div>
+                                <h2 class="text-xl font-bold mb-2 leading-tight">${deal.title}</h2>
+                                <p class="text-3xl font-mono mb-4 text-white">${deal.price.toLocaleString()} <span class="text-sm">SEK</span></p>
+                                <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-700/50">
+                                    <p class="text-gray-400 text-sm italic leading-relaxed">"${deal.reasoning}"</p>
+                                </div>
+                            </div>
+                            <a href="${deal.url}" target="_blank" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-4 transition-colors">
+                                VIEW ON BLOCKET
+                            </a>
+                        </div>
+                    `;
+                    grid.innerHTML += card;
+                });
+            } catch (err) {
+                console.error("Failed to fetch deals:", err);
+            }
+        }
+
+        fetchDeals();
+        setInterval(fetchDeals, 30000); 
+    </script>
+</body>
+</html>

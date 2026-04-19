@@ -23,6 +23,7 @@ async def upsert_ad(session: AsyncSession, ad_data: dict) -> Ad:
     if existing_ad:
         # Update fields if ad already exists
         existing_ad.price_sek = ad_data.get("price_sek", existing_ad.price_sek)
+        existing_ad.main_image_url = ad_data.get("main_image_url", existing_ad.main_image_url) # Update
         existing_ad.last_checked_at = now
         
         # If we see it again, it means it's active. Let's make sure status reflects that.
@@ -37,6 +38,7 @@ async def upsert_ad(session: AsyncSession, ad_data: dict) -> Ad:
             title=ad_data.get("title"),
             raw_description=ad_data.get("raw_description"),
             price_sek=ad_data.get("price_sek"),
+            main_image_url=ad_data.get("main_image_url"), # Save image
             category=ad_data.get("category"),
             status=StatusEnum.ACTIVE,
             scraped_at=now,

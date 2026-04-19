@@ -16,7 +16,7 @@ async def block_unnecessary_resources(route: Route):
     This saves massive amounts of bandwidth and speeds up the crawl.
     (The DOM <img> tags will still exist for us to scrape their 'src' URLs!)
     """
-    excluded_resource_types = ["image", "media", "font", "stylesheet"]
+    excluded_resource_types = ["image", "media", "font", "stylesheet", "other"]
     if route.request.resource_type in excluded_resource_types:
         await route.abort()
     else:

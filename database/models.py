@@ -48,6 +48,8 @@ class Ad(Base):
     raw_description: Mapped[str] = mapped_column(Text)
     price_sek: Mapped[int] = mapped_column(Integer)
 
+    main_image_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+
     item_type: Mapped[ItemTypeEnum] = mapped_column(Enum(ItemTypeEnum), default=ItemTypeEnum.UNKNOWN)
     
     category: Mapped[CategoryEnum] = mapped_column(Enum(CategoryEnum))
