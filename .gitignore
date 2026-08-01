@@ -1,17 +1,28 @@
-# Environments
-venv/
+# Secrets
 .env
+.env.*
+!.env.example
 
-# Databases
+# Local database — holds unredacted listing data. Never commit.
+# The published artifact is web/public/deals.json, produced by the publish step.
 *.db
 *.db-journal
+*.sqlite
+*.sqlite3
 
 # Python
+venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+.ruff_cache/
 
-# Local test files
-blocket.txt
-search.txt
-example.txt
-test_scraper.py
+# Frontend
+node_modules/
+web/dist/
+
+# Editors / OS / local tooling
+.DS_Store
+.idea/
+.vscode/
+.claude/

@@ -1,0 +1,25 @@
+# Source: Blocket's JSON endpoints, via the community wrapper.
+# Replaced the Playwright + stealth crawler (see legacy/) — lighter on Blocket's
+# infrastructure, ~100x faster, and no CAPTCHA surface.
+blocket-api>=0.5.2
+
+# Persistence
+SQLAlchemy>=2.0.25
+aiosqlite>=0.19.0
+alembic>=1.13.0
+
+# Local development API (not deployed — the public site is a static bundle)
+fastapi>=0.109.0
+uvicorn>=0.27.0
+pydantic>=2.5.3
+
+# AI extraction and risk assessment
+google-genai>=0.2.1
+python-dotenv>=1.0.0
+
+# HTTP (janitor liveness checks)
+httpx>=0.26.0
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.23.0

@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# The published artifact is the only output of this project that reaches the
+# public internet. The `redaction` job below is the one that must never be
+# allowed to pass by accident, so it runs on its own, needs no database, and
+# checks the bytes actually committed rather than what the pipeline believed it
+# wrote.
+
+jobs:
+  redaction:
+    name: Published snapshot is redacted and capped
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Nothing that must stay local is tracked
+        # Belt to the pre-commit hook's braces. The hook lives in the working
+        # copy and can be skipped with --no-verify or simply not enabled; this
+        # cannot.
+        run: |
+          if git ls-files | grep -E '\.(db|sqlite3?)$|(^|/)\.env$'; then
+            echo "::error::A database or env file is tracked in git."
+            exit 1
+          fi
+
+      - name: No API key anywhere in the tree
+        run: |
+          if grep -rEn 'AIza[0-9A-Za-z_-]{35}' --exclude-dir=.git .; then
+            echo "::error::Google API key pattern found in the repository."
+            exit 1
+          fi
+
+      - name: Verify web/public/deals.json
+        # Runs the real check from `pipeline/redact.py`, not a reimplementation
+        # of it — a CI-only copy of the rules would drift from the ones the
+        # publisher enforces, and the drift would be silent.
+        #
+        # No `pip install` step, deliberately. That module depends on nothing
+        # outside the standard library, so this cannot be skipped by a
+        # dependency-resolution failure. A check that always runs beats a
+        # better one that sometimes does not.
+        run: |
+          if [ -f web/public/deals.json ]; then
+            python -m pipeline.redact web/public/deals.json
+          else
+            echo "No snapshot committed yet; nothing to verify."
+          fi
+
+  tests:
+    name: Test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+
+      - name: Migrations match the models
+        # Catches the model change someone forgot to generate a revision for.
+        # An empty diff here is the assertion.
+        run: python -m alembic check
+
+  frontend:
+    name: Frontend typechecks and builds
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+      - name: No secret reached the bundle
+        # Phase 0 of this project was removing a Gemini key that vite.config.ts
+        # injected into the frontend via `define`. This is the regression test
+        # for that, and it belongs here rather than in pytest because the bug
+        # only existed in the built output.
+        run: |
+          if grep -rE 'AIza[0-9A-Za-z_-]{35}' dist/; then
+            echo "::error::An API key is present in the built frontend."
+            exit 1
+          fi
+          if grep -rq 'generativelanguage.googleapis.com' dist/; then
+            echo "::error::The frontend references the Gemini API directly."
+            exit 1
+          fi

@@ -1,0 +1,65 @@
+#!/bin/sh
+# Blocks commits containing credentials or local data artifacts.
+#
+# Enable once per clone:
+#   git config core.hooksPath .githooks
+#
+# Deliberately dependency-free (no gitleaks/pre-commit install needed) so it
+# still runs on a fresh clone. Bypass in a genuine emergency with --no-verify.
+
+fail=0
+
+# Only inspect files staged for commit, not the whole tree.
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged" ] && exit 0
+
+# 1. Never commit env files or the local database.
+for f in $staged; do
+    case "$f" in
+        .env|.env.*|*/.env|*/.env.*)
+            [ "$f" = ".env.example" ] && continue
+            echo "BLOCKED: attempting to commit env file: $f"
+            fail=1
+            ;;
+        *.db|*.db-journal|*.sqlite|*.sqlite3)
+            echo "BLOCKED: attempting to commit database file: $f"
+            echo "         The local DB holds unredacted ad data including personal data."
+            fail=1
+            ;;
+    esac
+done
+
+# 2. Scan staged content for credential patterns.
+#    Google API keys are AIza + 35 chars; also catch generic assignments.
+for f in $staged; do
+    [ -f "$f" ] || continue
+    if git show ":$f" 2>/dev/null | grep -qE 'AIza[0-9A-Za-z_-]{35}'; then
+        echo "BLOCKED: Google API key pattern found in: $f"
+        fail=1
+    fi
+    if git show ":$f" 2>/dev/null | grep -qEi '(api[_-]?key|secret|password|token)[[:space:]]*[:=][[:space:]]*["'"'"'][A-Za-z0-9_\-]{16,}["'"'"']'; then
+        echo "BLOCKED: hardcoded credential pattern found in: $f"
+        fail=1
+    fi
+done
+
+# 3. The published artifact must be redacted. Guard the obvious leaks.
+for f in $staged; do
+    case "$f" in
+        *deals.json|*/public/*.json)
+            if git show ":$f" 2>/dev/null | grep -qE '"(raw_description|description|seller|seller_name|phone|email|postal_code|zip|latitude|longitude|gps)"'; then
+                echo "BLOCKED: $f contains fields that must be redacted before publishing."
+                echo "         Run the publish step rather than committing raw pipeline output."
+                fail=1
+            fi
+            ;;
+    esac
+done
+
+if [ "$fail" -ne 0 ]; then
+    echo ""
+    echo "Commit aborted. Fix the above, or bypass with: git commit --no-verify"
+    exit 1
+fi
+
+exit 0

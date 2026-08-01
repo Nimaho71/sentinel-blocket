@@ -1,0 +1,133 @@
+{
+  "loaderData": {
+    "item-recommerce": {
+      "itemData": {
+        "title": "Asus TUF GeForce RTX 3060 12 GB VRAM grafikkort",
+        "location": {
+          "position": {
+            "lat": 59.27282,
+            "lng": 17.98368,
+            "links": {
+              "norortho": {
+                "uri": "https://www.blocket.se/map?adId=25234457&lat=59.27282&lon=17.98368&zoom=12&postalCode=12557",
+                "title": "Flyfoto"
+              },
+              "finnhybrid": {
+                "uri": "https://www.blocket.se/map?adId=25234457&lat=59.27282&lon=17.98368&zoom=12&postalCode=12557",
+                "title": "Hybridkart"
+              },
+              "finnvector": {
+                "uri": "https://www.blocket.se/map?adId=25234457&lat=59.27282&lon=17.98368&zoom=12&postalCode=12557",
+                "title": "Stort kart"
+              }
+            },
+            "accuracy": 5,
+            "mapImage": "https://maptiles.finncdn.no/staticmap?lat=59.27282&lng=17.98368&zoom=12&size=400x300&maptype=norwayVector&showPin=false"
+          },
+          "postalCode": "12557",
+          "postalName": "Älvsjö",
+          "countryCode": "SE"
+        },
+        "extras": [
+          {
+            "id": "condition",
+            "label": "Skick",
+            "value": "Mycket bra skick - som ny",
+            "valueId": 2
+          },
+          {
+            "id": "computer_components_type",
+            "label": "Typ",
+            "value": "Grafikkort",
+            "valueId": 2
+          }
+        ],
+        "meta": {
+          "adId": "25234457",
+          "ownerId": 289282448,
+          "userOwner": true,
+          "hasBeenPublished": true,
+          "edited": "2026-07-30T00:28:16.149652+02:00",
+          "schemaName": "recommerce-sell",
+          "isInactive": false,
+          "isLegacySchema": false,
+          "isOwnAd": false,
+          "shouldIndex": true
+        },
+        "price": 3200,
+        "category": {
+          "id": 8368,
+          "value": "Datorkomponenter",
+          "parent": {
+            "id": 3215,
+            "value": "Datorer",
+            "parent": {
+              "id": 93,
+              "value": "Elektronik och vitvaror"
+            }
+          }
+        },
+        "images": [
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/4745c2b5-58a8-4d8a-bb9f-8ee4f3d02eaf",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/64cb29df-83b7-4777-a260-fe8084ab87d0",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/6b0e5a30-bc62-48f0-a30f-d3fcabeda735",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/35a15de6-caa0-4aa2-86c7-636105694b57",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/021e71ce-c66e-4356-b427-b3556f3cb9c4",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/744656d7-5e84-4bce-8b5c-b60cf715d77c",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/bb877592-b610-482c-8095-383ad0555df9",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/52c55483-034d-4f18-9561-0b8a47357f92",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          },
+          {
+            "uri": "https://images.blocketcdn.se/dynamic/default/item/25234457/1e2329e9-89b5-49e0-83d1-2b928a8e018c",
+            "width": 4000,
+            "height": 3000,
+            "description": ""
+          }
+        ],
+        "disposed": false,
+        "adViewTypeLabel": "Säljes",
+        "description": "Asus TUF GeForce RTX 3060 grafikkort med tre fläktar och rejäl kylare. Har tre displayports och två HDMI ports. Har 12 GB VRAM, inga problem eller skador. Funkar galant.",
+        "isWebstore": false
+      }
+    }
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "docs": [
+    {
+      "type": "bap",
+      "id": "25234457",
+      "main_search_key": "SEARCH_ID_BAP_ALL",
+      "heading": "Asus TUF GeForce RTX 3060 12 GB VRAM grafikkort",
+      "location": "Älvsjö",
+      "image": {
+        "url": "https://images.blocketcdn.se/dynamic/default/item/25234457/4745c2b5-58a8-4d8a-bb9f-8ee4f3d02eaf",
+        "path": "item/25234457/4745c2b5-58a8-4d8a-bb9f-8ee4f3d02eaf",
+        "height": 3000,
+        "width": 4000,
+        "aspect_ratio": 1.3333333333333333
+      },
+      "flags": [
+        "private",
+        "shipping_exists",
+        "buy_now"
+      ],
+      "timestamp": 1785357845000,
+      "coordinates": {
+        "lat": 59.27282,
+        "lon": 17.98368,
+        "accuracy": 5
+      },
+      "ad_type": 67,
+      "labels": [
+        {
+          "id": "fiks_ferdig",
+          "text": "Kan skickas",
+          "type": "PRIMARY"
+        },
+        {
+          "id": "buy_now",
+          "text": "Köp nu",
+          "type": "SECONDARY"
+        },
+        {
+          "id": "private",
+          "text": "Privat",
+          "type": "SECONDARY"
+        }
+      ],
+      "canonical_url": "https://www.blocket.se/recommerce/forsale/item/25234457",
+      "extras": [],
+      "price": {
+        "amount": 3200,
+        "currency_code": "SEK",
+        "price_unit": "kr"
+      },
+      "distance": 0,
+      "trade_type": "Säljes",
+      "image_urls": [
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/4745c2b5-58a8-4d8a-bb9f-8ee4f3d02eaf",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/64cb29df-83b7-4777-a260-fe8084ab87d0",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/6b0e5a30-bc62-48f0-a30f-d3fcabeda735",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/35a15de6-caa0-4aa2-86c7-636105694b57",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/021e71ce-c66e-4356-b427-b3556f3cb9c4",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/744656d7-5e84-4bce-8b5c-b60cf715d77c",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/bb877592-b610-482c-8095-383ad0555df9",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/52c55483-034d-4f18-9561-0b8a47357f92",
+        "https://images.blocketcdn.se/dynamic/default/item/25234457/1e2329e9-89b5-49e0-83d1-2b928a8e018c"
+      ],
+      "ad_id": 25234457,
+      "metadata": {
+        "source": "keyword"
+      }
+    },
+    {
+      "type": "bap",
+      "id": "25233420",
+      "main_search_key": "SEARCH_ID_BAP_ALL",
+      "heading": "Gaming Setup – RTX 3060 + Ryzen 5 5600G + 240Hz skärm",
+      "location": "Motala",
+      "image": {
+        "url": "https://images.blocketcdn.se/dynamic/default/item/25233420/1a46c371-7911-4a32-adc5-37a2896c3167",
+        "path": "item/25233420/1a46c371-7911-4a32-adc5-37a2896c3167",
+        "height": 4284,
+        "width": 5712,
+        "aspect_ratio": 1.3333333333333333
+      },
+      "flags": [
+        "private"
+      ],
+      "timestamp": 1785354403000,
+      "coordinates": {
+        "lat": 58.54684,
+        "lon": 15.03197,
+        "accuracy": 5
+      },
+      "ad_type": 67,
+      "labels": [
+        {
+          "id": "private",
+          "text": "Privat",
+          "type": "SECONDARY"
+        }
+      ],
+      "canonical_url": "https://www.blocket.se/recommerce/forsale/item/25233420",
+      "extras": [
+        {
+          "id": "brand",
+          "label": "",
+          "values": [
+            "HP"
+          ]
+        }
+      ],
+      "price": {
+        "amount": 8500,
+        "currency_code": "SEK",
+        "price_unit": "kr"
+      },
+      "distance": 0,
+      "trade_type": "Säljes",
+      "image_urls": [
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/1a46c371-7911-4a32-adc5-37a2896c3167",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/07601c1e-b1c9-458c-a728-99d125494e6f",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/a2acbdb7-905c-44d4-ae1f-23f67fdf7af8",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/974f9101-51b8-4595-ba5e-022f50f46a3b",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/c2b6e8c4-9eb7-459e-9cc2-b1351491bfd9",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/4f97b930-4128-46f9-a82d-0bd6a9681d25",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/4a358323-2a36-49c9-8e4d-5469f2766f99",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/29f06d03-35be-4ae7-8b78-446ecb47ff00",
+        "https://images.blocketcdn.se/dynamic/default/item/25233420/6812b78d-34ec-446d-a1ac-585d5394f55d"
+      ],
+      "brand": "HP",
+      "ad_id": 25233420,
+      "metadata": {
+        "source": "keyword"
+      }
+    },
+    {
+      "type": "bap",
+      "id": "25224607",
+      "main_search_key": "SEARCH_ID_BAP_ALL",
+      "heading": "ZOTAC Gaming GeForce RTX 3060 Twin Edge – 12GB GDDR6",
+      "location": "Rönninge",
+      "image": {
+        "url": "https://images.blocketcdn.se/dynamic/default/item/25224607/6054f580-8e3e-4ffd-afe6-e54ee47d59a5",
+        "path": "item/25224607/6054f580-8e3e-4ffd-afe6-e54ee47d59a5",
+        "height": 4284,
+        "width": 5712,
+        "aspect_ratio": 1.3333333333333333
+      },
+      "flags": [
+        "private",
+        "shipping_exists",
+        "buy_now"
+      ],
+      "timestamp": 1785336633000,
+      "coordinates": {
+        "lat": 59.20873,
+        "lon": 17.76527,
+        "accuracy": 5
+      },
+      "ad_type": 67,
+      "labels": [
+        {
+          "id": "fiks_ferdig",
+          "text": "Kan skickas",
+          "type": "PRIMARY"
+        },
+        {
+          "id": "buy_now",
+          "text": "Köp nu",
+          "type": "SECONDARY"
+        },
+        {
+          "id": "private",
+          "text": "Privat",
+          "type": "SECONDARY"
+        }
+      ],
+      "canonical_url": "https://www.blocket.se/recommerce/forsale/item/25224607",
+      "extras": [],
+      "price": {
+        "amount": 2590,
+        "currency_code": "SEK",
+        "price_unit": "kr"
+      },
+      "distance": 0,
+      "trade_type": "Säljes",
+      "image_urls": [
+        "https://images.blocketcdn.se/dynamic/default/item/25224607/6054f580-8e3e-4ffd-afe6-e54ee47d59a5",
+        "https://images.blocketcdn.se/dynamic/default/item/25224607/89b82993-dda4-439d-a94f-101ea770dde9",
+        "https://images.blocketcdn.se/dynamic/default/item/25224607/8ef66d2c-fc97-4f8f-90ce-cfc99d8b2239"
+      ],
+      "ad_id": 25224607,
+      "metadata": {
+        "source": "keyword"
+      }
+    }
+  ]
+}
