@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Nightly pipeline run.
+
+  A LaunchAgent, not a LaunchDaemon: a daemon runs as root before login and
+  cannot reach the user's keychain or SSH agent, so it could never push.
+
+  Install:
+      cp scripts/se.sentinel.nightly.plist ~/Library/LaunchAgents/
+      launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/se.sentinel.nightly.plist
+
+  Run it once by hand without waiting for 03:00:
+      launchctl kickstart -p gui/$(id -u)/se.sentinel.nightly
+
+  Remove:
+      launchctl bootout gui/$(id -u)/se.sentinel.nightly
+
+  StartCalendarInterval catches up a missed run when the machine wakes, which
+  is the reason this is launchd and not cron -- cron on a laptop simply skips
+  03:00 if the lid was shut, and never mentions it. But launchd does not *wake*
+  the machine, so a missed run lands whenever you next open the laptop, in the
+  middle of the day, against a rate limit that ETHICS.md describes as overnight.
+  To make 03:00 actually happen:
+
+      sudo pmset repeat wakeorpoweron MTWRFSU 02:55:00
+
+  Replace NILS_HOME below if the repository ever moves; launchd does no shell
+  expansion, so ~ and $HOME are literal characters here.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>se.sentinel.nightly</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/nils/Documents/Coding_projects/sentinel-blocket/scripts/nightly.sh</string>
+    </array>
+
+    <!-- Not cosmetic. QUOTA_LEDGER_PATH and several other defaults resolve
+         against the working directory, and launchd would otherwise start the
+         job in `/`. The script sets an absolute path too; both, deliberately. -->
+    <key>WorkingDirectory</key>
+    <string>/Users/nils/Documents/Coding_projects/sentinel-blocket</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>3</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <!-- The whole point of a scheduled job you never look at is that when it
+         breaks, it says so somewhere. These two files are that somewhere. -->
+    <key>StandardOutPath</key>
+    <string>/Users/nils/Library/Logs/sentinel/nightly.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/nils/Library/Logs/sentinel/nightly.err.log</string>
+
+    <!-- Do not run at load, and do not restart on failure. A pipeline that
+         relaunches itself after an error would hammer Blocket in a loop, which
+         is the one behaviour this project has promised not to have. -->
+    <key>RunAtLoad</key>
+    <false/>
+    <key>KeepAlive</key>
+    <false/>
+
+    <!-- Nice it down: the run is entirely rate-limit bound, so it has no need
+         to compete with anything else that happens to be awake. -->
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
