@@ -269,3 +269,99 @@ def test_three_digit_model_numbers_are_recognised():
     """
     assert names(extract("Radeon RX 580 8GB")) == {"RX 580"}
     assert names(extract("GTX 970 säljes")) == {"GTX 970"}
+
+
+class TestTradeIntentIsNotAPartsList:
+    """A used-marketplace listing routinely names hardware it does not contain.
+
+    The live failure: a HP ZBook 17 G5 laptop, whose actual GPU is a Quadro
+    P4200, said "Främst intresserad av RTX 3080 Ti eller bättre" — what the
+    seller wanted in trade. Deterministic extraction recorded an RTX 3080 Ti as
+    a component, valued the machine 5 500 kr above its contents, and published
+    it as the best deal on the board.
+    """
+
+    _TITLE = "HP ZBook 17 G5 – i7-8850H / 32GB RAM / Quadro P4200 8GB / 512GB SSD"
+    _BODY = (
+        "Säljer min HP ZBook 17 G5 i bra skick. En rejäl och kraftfull "
+        "workstation-laptop som passar bra för CAD, 3D och rendering.\n\n"
+        "Intresserad av grafikkort + am4 processor.\n"
+        "Främst intresserad av RTX 3080 Ti eller bättre.\n"
+    )
+
+    def test_the_zbook_never_settles_deterministically(self):
+        extraction = extract(self._TITLE, self._BODY)
+
+        assert extraction.trade_signals, "the trade phrasing must be seen"
+        assert not extraction.is_confident, (
+            "an ad naming parts it wants must go to the model, not be valued "
+            "from a regex read of its wishlist"
+        )
+
+    def test_trade_intent_is_not_reported_as_a_risk(self):
+        """A seller asking to trade is not describing a fault. Keeping the two
+        apart is what stops 'wants an RTX 3080' being published as a warning
+        about the machine's condition."""
+        extraction = extract(self._TITLE, self._BODY)
+
+        assert extraction.trade_signals
+        assert not extraction.risk_signals
+
+    def test_an_ordinary_listing_still_skips_the_model(self):
+        """The control. Over-matching costs a model call on every clean ad in
+        the corpus, so the guard has to stay off ads that never mention a
+        trade — otherwise this 'fix' quietly disables the fast path."""
+        extraction = extract(
+            "ASUS Dual RTX 3060 Ti OC V2 (8GB)",
+            "Nyskick, kvitto finns. Fungerar perfekt.",
+        )
+
+        assert extraction.trade_signals == ()
+        assert extraction.is_confident
+
+    @pytest.mark.parametrize(
+        "phrase",
+        [
+            "Kan tänka mig att byta mot ps5 pro.",
+            "Byte mot laptop eller 27000 vid snabb affär.",
+            "Säljes eller bytes mot gaming-laptop.",
+            "4080 eller liknande kort i byte + pengar.",
+            "Främst intresserad av RTX 3080 Ti eller bättre.",
+        ],
+    )
+    def test_real_trade_phrasings_are_caught(self, phrase):
+        """Every one of these is quoted from the live corpus."""
+        extraction = extract("Gaming PC RTX 3060 / Ryzen 5 5600", f"Fin dator. {phrase}")
+
+        assert extraction.trade_signals, f"missed trade intent in: {phrase}"
+        assert not extraction.is_confident
+
+    @pytest.mark.parametrize(
+        "phrase",
+        [
+            "Hör av dig om du vill ha fler bilder.",
+            "Söker du en välbalanserad och högpresterande dator?",
+            "Kringutrustning medföljer om köparen önskar.",
+            "Säljer inför uppgradering till nytt kort.",
+            "Går att uppgradera till Windows 11.",
+            "Inga skambud eller byten, tack.",
+        ],
+    )
+    def test_ordinary_sales_copy_is_not_mistaken_for_a_trade(self, phrase):
+        """The half that keeps this from being useless.
+
+        Each phrase below was a candidate signal, and each was measured against
+        the live corpus and rejected — "vill ha" alone matched 262 ads, almost
+        all of them offering more photographs. A signal list that fires on
+        ordinary sales copy does not weakly help, it stops being a signal.
+
+        "Inga byten" is the sharpest case: the seller is *refusing* trades, so
+        the parts list is the most trustworthy kind there is. Flagging it would
+        invert the meaning entirely.
+        """
+        extraction = extract(
+            "Gaming PC RTX 3060 / Ryzen 5 5600", f"Fin dator, allt fungerar. {phrase}"
+        )
+
+        assert extraction.trade_signals == (), f"false positive on: {phrase}"
+        assert extraction.is_confident

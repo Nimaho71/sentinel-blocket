@@ -160,6 +160,19 @@ class QuotaLedger:
             return 0
         return max(0, quota.rpd - self.used_today(model, now=now))
 
+    def remaining_requests_today(self, *, now: datetime | None = None) -> int:
+        """Requests left today across the pools ordinary evaluation may use.
+
+        Escalation models are excluded on purpose. Their 20 RPD exists to give
+        a *failed* batch somewhere to go; spending it on routine work would
+        empty the reserve before the ads that need it arrive.
+        """
+        return sum(
+            self.remaining_today(model.name, now=now)
+            for model in MODELS
+            if not model.escalation_only
+        )
+
     def last_call_at(self, model: str) -> datetime | None:
         cursor = self._conn.execute(
             "SELECT MAX(called_at) FROM requests WHERE model = ?", (model,)

@@ -158,7 +158,7 @@ async def upsert_ad(session: AsyncSession, record: AdRecord) -> Ad:
 
 
 async def ads_needing_evaluation(
-    session: AsyncSession, *, limit: int = 200, max_attempts: int = 3
+    session: AsyncSession, *, limit: int | None = 200, max_attempts: int = 3
 ) -> list[Ad]:
     """Active ads with no current verdict, skipping ones that keep failing.
 
@@ -168,6 +168,10 @@ async def ads_needing_evaluation(
 
     `max_attempts` is what stops a permanently malformed ad from consuming a
     slot on every run forever.
+
+    `limit=None` returns the whole backlog. The caller wants that when the
+    number it can actually afford is not known until *after* the free
+    deterministic pass has run — see `ai.batch_processor.process_unscored_ads`.
     """
     has_current_verdict = (
         select(AiEvaluation.id)
@@ -183,8 +187,9 @@ async def ads_needing_evaluation(
         .where(~has_current_verdict)
         .where(Ad.id.not_in(exhausted))
         .order_by(Ad.scraped_at.desc())
-        .limit(limit)
     )
+    if limit is not None:
+        stmt = stmt.limit(limit)
     return list((await session.execute(stmt)).scalars().all())
 
 

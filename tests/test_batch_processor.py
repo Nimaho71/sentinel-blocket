@@ -367,3 +367,129 @@ async def test_descriptions_are_truncated_before_being_sent(
 
     sent = stub_gemini.calls[0][0]
     assert len(sent["description"]) == MAX_DESCRIPTION_CHARS
+
+
+# --------------------------------------------------------------- quota sizing
+#
+# The stage used to take a fixed 200 ads per run. On a measured production run
+# that spent 18 of 1 000 available requests while 2 235 scraped ads sat
+# unevaluated — and because the price index is built from `canonical_name`,
+# which only evaluation writes, those ads were invisible to every valuation on
+# the site. The cap now comes from the quota, and these tests pin the parts of
+# that which are easy to get subtly wrong.
+
+
+@pytest.fixture
+def quota(monkeypatch):
+    """Pin the day's remaining model quota to an exact number of requests."""
+
+    class FakeLedger:
+        def __init__(self):
+            self.requests = 1_000
+
+        def remaining_requests_today(self, *, now=None):
+            return self.requests
+
+    ledger = FakeLedger()
+    monkeypatch.setattr(batch_processor, "affordable_today",
+                        lambda batch_size=batch_processor.DEFAULT_BATCH_SIZE: (
+                            int(ledger.requests * (1 - batch_processor.QUOTA_RESERVE))
+                            * batch_size
+                        ))
+    return ledger
+
+
+async def test_the_whole_backlog_is_taken_not_a_fixed_two_hundred(
+    session_factory, ad_factory, stub_gemini, quota
+):
+    """The regression that matters. 250 > the old hardcoded 200, so this test
+    fails against the previous default while passing against a quota that can
+    comfortably afford all of them."""
+    await seed(session_factory, ad_factory, 250)
+
+    stub_gemini.returns(lambda payload: [verdict_for(e) for e in payload])
+    stats = await batch_processor.process_unscored_ads(session_factory)
+
+    assert stats.evaluated == 250
+    assert stats.deferred == 0
+
+    async with session_factory() as session:
+        remaining = await ads_needing_evaluation(session, limit=None)
+    assert remaining == [], "nothing should be left waiting when quota allows"
+
+
+async def test_free_local_resolution_is_never_rationed_by_quota(
+    session_factory, ad_factory, stub_gemini, quota
+):
+    """The subtle half of this change.
+
+    The deterministic pass is regex over text already on disk — it spends no
+    quota whatsoever. Capping the database *fetch* by quota, as a naive fix
+    would, rations the free work along with the paid work. With zero requests
+    left, every locally-resolvable ad must still be resolved.
+    """
+    quota.requests = 0
+    async with session_factory() as session:
+        session.add_all([
+            ad_factory(str(i), title=f"ASUS Dual RTX 3060 Ti OC V{i} (8GB)",
+                       description="Nyskick, kvitto finns.")
+            for i in range(30)
+        ])
+        await session.commit()
+
+    stub_gemini.returns(lambda payload: [verdict_for(e) for e in payload])
+    stats = await batch_processor.process_unscored_ads(session_factory)
+
+    assert stats.resolved_locally == 30
+    assert stats.evaluated == 30
+    assert stub_gemini.calls == [], "no quota, and none was needed"
+    assert stats.deferred == 0
+
+
+async def test_ads_beyond_the_quota_are_deferred_and_counted(
+    session_factory, ad_factory, stub_gemini, quota
+):
+    """A backlog is not a failure, and must not be reported as one — nor
+    hidden. `deferred` is the number that makes a partial run legible."""
+    quota.requests = 5  # 5 * 0.8 = 4 batches = 40 ads
+    await seed(session_factory, ad_factory, 60)
+
+    stub_gemini.returns(lambda payload: [verdict_for(e) for e in payload])
+    stats = await batch_processor.process_unscored_ads(session_factory)
+
+    assert stats.evaluated == 40
+    assert stats.deferred == 20
+    assert stats.failed == 0, "deferred work is not failed work"
+    assert "20 deferred" in stats.summary()
+
+    async with session_factory() as session:
+        remaining = await ads_needing_evaluation(session, limit=None)
+    assert len(remaining) == 20, "the rest stay eligible for the next run"
+
+
+async def test_exhausted_quota_defers_everything_rather_than_erroring(
+    session_factory, ad_factory, stub_gemini, quota
+):
+    quota.requests = 0
+    await seed(session_factory, ad_factory, 12)
+
+    stub_gemini.returns(lambda payload: [verdict_for(e) for e in payload])
+    stats = await batch_processor.process_unscored_ads(session_factory)
+
+    assert stats.deferred == 12
+    assert stats.failed == 0
+    assert stub_gemini.calls == []
+
+
+async def test_an_explicit_limit_still_overrides_the_quota_sizing(
+    session_factory, ad_factory, stub_gemini, quota
+):
+    """`--limit` remains a testing cap. It has to keep working, or a quick
+    `--limit 5` run would quietly spend the whole day's quota."""
+    await seed(session_factory, ad_factory, 40)
+
+    stub_gemini.returns(lambda payload: [verdict_for(e) for e in payload])
+    stats = await batch_processor.process_unscored_ads(session_factory, limit=10)
+
+    assert stats.evaluated == 10
+    assert len(stub_gemini.calls) == 1

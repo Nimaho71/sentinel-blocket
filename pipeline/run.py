@@ -120,7 +120,12 @@ async def stage_evaluate(opts: RunOptions) -> bool:
         logger.info("[dry run] skipping AI evaluation (it costs quota)")
         return True
 
-    stats = await process_unscored_ads(AsyncSessionLocal, limit=opts.limit or 200)
+    # `opts.limit` unset means "as much as today's quota affords", not 200. The
+    # old default was the pipeline's real bottleneck: ingest was bringing in
+    # thousands of ads a night and evaluation was looking at two hundred of
+    # them, using under 2% of the available quota, so most of the database
+    # stayed invisible to the price index.
+    stats = await process_unscored_ads(AsyncSessionLocal, limit=opts.limit)
     logger.info(stats.summary())
     # Some failures are expected and bounded; a stage where *everything* failed
     # is a broken stage, not a slow day.

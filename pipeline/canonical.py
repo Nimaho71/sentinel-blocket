@@ -38,11 +38,32 @@ looked before this was measured.
 Merge "RTX 3070" with "RTX 3070 Ti". Model names nest, the longer one is the
 more expensive part, and over-merging silently corrupts the index — whereas
 under-merging merely thins it. Wrong in the cheap direction, on purpose.
+
+Nor will it merge a laptop GPU with the desktop card of the same name. Nvidia
+gives both the same number and they are not the same part: the mobile version
+is cut down and trades for substantially less. Found live, and it had reached
+the top of the published board — an Acer Predator Helios laptop was credited
+with a 38 000 kr desktop RTX 5090 and advertised as 22 700 kr below parts, on
+the strength of a single desktop observation. The card in it is worth a
+fraction of that.
+
+Detecting this needs the *ad*, not just the part name: that listing said only
+"5090". See `is_laptop_listing` for what stands in for the missing word.
 """
 
 from __future__ import annotations
 
 import re
+
+# Named separately from the rule table below so `canonicalize` can ask whether
+# the match it made was a graphics card. Only GPUs take the laptop suffix: a
+# mobile CPU already announces itself in its own model number (i7-8850H), and
+# laptop RAM and storage are the same parts at the same prices.
+_NVIDIA_GPU = re.compile(
+    r"\b(RTX|GTX)\s*(\d{3,4})\s*(Ti\s*Super|Super|Ti)?\b", re.IGNORECASE
+)
+_AMD_GPU = re.compile(r"\b(RX)\s*(\d{3,4})\s*(XTX|XT)?\b", re.IGNORECASE)
+_GPU_PATTERNS = (_NVIDIA_GPU, _AMD_GPU)
 
 # Model designations that determine price, each paired with a formatter.
 #
@@ -60,7 +81,7 @@ _MODEL_RULES: tuple[tuple[re.Pattern[str], "object"], ...] = (
     # its own index entry. Greedy `{3,4}` still prefers the four-digit reading
     # where one exists, so "RTX 3080" is unaffected.
     (
-        re.compile(r"\b(RTX|GTX)\s*(\d{3,4})\s*(Ti\s*Super|Super|Ti)?\b", re.IGNORECASE),
+        _NVIDIA_GPU,
         lambda m: " ".join(
             p for p in (m.group(1), m.group(2), _squash(m.group(3) or "")) if p
         ),
@@ -68,7 +89,7 @@ _MODEL_RULES: tuple[tuple[re.Pattern[str], "object"], ...] = (
     # AMD Radeon. Three digits matters more here than on the NVIDIA side — the
     # RX 570 and RX 580 are among the most common used cards on the market.
     (
-        re.compile(r"\b(RX)\s*(\d{3,4})\s*(XTX|XT)?\b", re.IGNORECASE),
+        _AMD_GPU,
         lambda m: " ".join(p for p in (m.group(1), m.group(2), m.group(3) or "") if p),
     ),
     # AMD Ryzen: "Ryzen5 5600" and "Ryzen 5 5600" must collapse.
@@ -112,6 +133,48 @@ _MODEL_RULES: tuple[tuple[re.Pattern[str], "object"], ...] = (
 )
 
 
+# Words that name the form factor outright. Matched as substrings on purpose:
+# "gaminglaptop" is written as one word about as often as two.
+_LAPTOP_WORDS = (
+    "laptop", "bärbar", "notebook", "ultrabook", "max-q", "max q", "mobile",
+)
+
+# A mobile CPU is the giveaway when no word says "laptop" — you cannot put one
+# in a desktop, so it settles the question on its own. Intel's mobile parts end
+# H/HX/HQ/HK/U and AMD's H/HS/HX, against desktop K/KF/F/X/X3D.
+#
+# The trailing `3D` is not decorative: "Ryzen 9 9955HX3D" is a laptop chip, and
+# a plain word boundary after the suffix rejects it — measured against the
+# corpus, which is the only reason it is here.
+# Three digits, not four: Intel's Core Ultra line numbers its parts "275HX",
+# and a four-digit floor rejected the exact listing that prompted this. The
+# suffix is what carries the meaning, so a shorter number costs no precision —
+# desktop Core Ultra parts end K, and no desktop part ends H, HX or U.
+_MOBILE_CPU = re.compile(
+    r"(?:i[3579]|ultra\s*[3579]|ryzen\s*[3579])[\s-]*\d{3,5}\s*"
+    r"(?:HX|HQ|HS|HK|H|U)(?:3D)?(?![A-Za-z0-9])",
+    re.IGNORECASE,
+)
+
+
+def is_laptop_listing(*texts: str | None) -> bool:
+    """Whether an ad is selling a laptop, from its title and part names.
+
+    Deliberately **not** given the description. Measured: "laptop" appears in
+    292 descriptions, and the first one read was an "Uppgraderad stationär" —
+    a desktop whose seller merely mentioned laptops. The title and the parts
+    list are where the machine describes itself.
+
+    Over-detection is the safer error. Calling a desktop a laptop costs its GPU
+    an index match and leaves the ad unpriced; the reverse publishes a laptop
+    at desktop prices as the best deal on the site.
+    """
+    haystack = " ".join(text for text in texts if text).lower()
+    if any(word in haystack for word in _LAPTOP_WORDS):
+        return True
+    return _MOBILE_CPU.search(haystack) is not None
+
+
 def _medium(raw: str) -> str:
     """M.2 and NVMe name the same kind of drive; SATA SSD and HDD do not."""
     return "nvme" if raw.lower().replace(".", "") == "m2" else raw.lower()
@@ -121,19 +184,32 @@ def _squash(text: str) -> str:
     return " ".join(text.lower().split())
 
 
-def canonicalize(name: str) -> str:
+def canonicalize(name: str, *, laptop: bool = False) -> str:
     """Reduce a component name to the model designation that sets its price.
 
     Falls back to the whitespace-and-case-normalised name when no known model
     pattern matches — an unrecognised part still deserves a stable key, it just
     will not merge with differently-worded sightings of itself.
+
+    `laptop=True` marks a graphics card as the mobile variant, giving it its own
+    index key. Callers get it from `is_laptop_listing`, because the ad usually
+    knows and the part name usually does not — "RTX 5090" is written the same
+    either way. A name that says so itself ("RTX 4080 Laptop GPU") is caught
+    here regardless of the flag.
     """
     if not name:
         return ""
 
+    mobile = laptop or any(word in name.lower() for word in _LAPTOP_WORDS)
+
     for pattern, format_match in _MODEL_RULES:
         match = pattern.search(name)
         if match:
-            return _squash(format_match(match))
+            canonical = _squash(format_match(match))
+            if mobile and pattern in _GPU_PATTERNS:
+                # A suffix rather than a separate field: the index joins on this
+                # one string, and every reader already compares it exactly.
+                return f"{canonical} laptop"
+            return canonical
 
     return _squash(name)

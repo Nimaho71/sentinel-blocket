@@ -31,7 +31,7 @@ from sqlalchemy.orm import selectinload
 
 from ai.gemini_client import analyze_ads_batch, build_payload
 from ai.schemas import AdVerdict
-from pipeline.canonical import canonicalize
+from pipeline.canonical import canonicalize, is_laptop_listing
 from db.crud import ads_needing_evaluation, clear_ai_failure, record_ai_failure
 from db.models import Ad, AiEvaluation, ExtractedComponent
 from pipeline.extract import extract
@@ -40,6 +40,31 @@ from pipeline.index import value_ad
 logger = logging.getLogger(__name__)
 
 DEFAULT_BATCH_SIZE = 10
+
+# Fraction of the day's remaining quota one run will not touch. Evaluation is
+# not the only claimant on it: a failed batch is retried, and escalation draws
+# on the same key. A run that spends down to the last request leaves the next
+# failure with nowhere to go.
+QUOTA_RESERVE = 0.2
+
+
+def affordable_today(batch_size: int = DEFAULT_BATCH_SIZE) -> int:
+    """How many ads today's remaining model quota can still cover.
+
+    Replaces a hardcoded 200, which was not derived from anything. On a
+    measured run that cap evaluated 200 ads using **18 of 1 000** available
+    requests — 1.8% of the free-tier quota — while 2 235 already-scraped ads
+    sat unevaluated. Since the price index is built from `canonical_name`, and
+    canonical names come from evaluation, those ads were invisible to every
+    valuation on the site despite being fully paid for at ingest.
+
+    A cap has to come from the quota or it is a guess, and a guess here throttles
+    the whole pipeline silently — the run reports success either way.
+    """
+    from ai.gemini_client import get_ledger
+
+    requests = int(get_ledger().remaining_requests_today() * (1.0 - QUOTA_RESERVE))
+    return max(0, requests) * batch_size
 
 # Recorded as the "model" for locally-resolved ads, so provenance stays
 # queryable: "which verdicts did no model ever see?" is one WHERE clause.
@@ -60,6 +85,11 @@ class EvaluationStats:
     evaluated: int = 0
     resolved_locally: int = 0
     failed: int = 0
+    # Ads that needed a model and did not get one because the day's quota ran
+    # out. Distinct from `failed`: nothing went wrong, the work simply has not
+    # happened yet. Kept apart so a backlog cannot be read as a fault, nor a
+    # fault dismissed as a backlog.
+    deferred: int = 0
     errors: list[str] = field(default_factory=list)
 
     def summary(self) -> str:
@@ -69,6 +99,8 @@ class EvaluationStats:
             f"({self.resolved_locally} without a model call), "
             f"{self.failed} failed"
         )
+        if self.deferred:
+            text += f", {self.deferred} deferred to the next run (quota)"
         if self.failed:
             # Surfaced in the run summary rather than buried in a log line. The
             # old pipeline's silence about this gap is the whole reason it went
@@ -90,6 +122,13 @@ def _apply_verdict(session, ad: Ad, verdict: AdVerdict, model: str) -> None:
     # re-analysed after a price change would collect a second set of component
     # rows and be double-counted by the market index.
     ad.extracted_components.clear()
+    # Decided once for the whole ad, from the title and the complete parts
+    # list. A single component cannot answer it: the GPU of a gaming laptop is
+    # written "RTX 5090", exactly as the desktop card is, and what gives it away
+    # is the mobile CPU sitting next to it in the same listing.
+    laptop = is_laptop_listing(
+        ad.title, *(c.component_name for c in verdict.components)
+    )
     for component in verdict.components:
         ad.extracted_components.append(
             ExtractedComponent(
@@ -97,7 +136,7 @@ def _apply_verdict(session, ad: Ad, verdict: AdVerdict, model: str) -> None:
                 component_name=component.component_name,
                 # Written at insert time, not computed at query time, so the
                 # market index can match on an indexed column.
-                canonical_name=canonicalize(component.component_name),
+                canonical_name=canonicalize(component.component_name, laptop=laptop),
             )
         )
 
@@ -200,7 +239,7 @@ async def process_unscored_ads(
     session_factory: async_sessionmaker,
     *,
     batch_size: int = DEFAULT_BATCH_SIZE,
-    limit: int = 200,
+    limit: int | None = None,
     model: str | None = None,
     use_deterministic: bool = True,
 ) -> EvaluationStats:
@@ -209,6 +248,13 @@ async def process_unscored_ads(
     Takes a session *factory*, not a session: each batch runs in its own
     transaction, so one bad batch cannot roll back the work of the batches
     before it.
+
+    `limit=None` — the default — means "the whole backlog, as far as today's
+    quota reaches". The two halves of this stage cost very different things and
+    so are bounded separately: the deterministic pass is local regex work that
+    spends no quota at all and is never rationed, while only the ads that still
+    need a model are trimmed to what `affordable_today` allows. Capping the
+    *fetch* instead, as the old fixed limit did, rationed the free half too.
     """
     stats = EvaluationStats()
 
@@ -229,6 +275,24 @@ async def process_unscored_ads(
         if not pending_ids:
             logger.info(stats.summary())
             return stats
+
+    affordable = affordable_today(batch_size) if limit is None else limit
+    if len(pending_ids) > affordable:
+        # Said out loud, with the number. A stage that quietly evaluates a
+        # fraction of its backlog and logs "done" is the exact shape of the bug
+        # this module was rewritten around.
+        stats.deferred = len(pending_ids) - affordable
+        logger.warning(
+            "Quota covers %d of %d ads needing a model; deferring %d to the "
+            "next run.",
+            affordable, len(pending_ids), stats.deferred,
+        )
+        pending_ids = pending_ids[:affordable]
+
+    if not pending_ids:
+        logger.warning("No quota left today — %d ads still await a model.", stats.deferred)
+        logger.info(stats.summary())
+        return stats
 
     logger.info(
         "Evaluating %d ads in batches of %d...", len(pending_ids), batch_size

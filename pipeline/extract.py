@@ -103,6 +103,45 @@ RISK_SIGNALS = (
     "startar inte", "startar ej", "stendöd", "obs läs beskrivning",
 )
 
+# Phrases meaning a part named nearby is what the seller **wants**, not what
+# they are selling. A used-marketplace listing routinely names hardware it does
+# not contain: trade offers, upgrade wishlists, compatibility notes.
+#
+# Found live. A HP ZBook 17 G5 — a laptop with a Quadro P4200 — carried the
+# line "Främst intresserad av RTX 3080 Ti eller bättre" in its description.
+# Pattern matching read the model name and recorded an RTX 3080 Ti as a
+# component, valuing the machine 5 500 kr above what it contained and
+# publishing it as the best deal on the board. The text was parsed correctly;
+# the wrong meaning was taken from it.
+#
+# Separate from `RISK_SIGNALS` because the two say different things: risk means
+# "the condition needs a human", trade means "the parts list may be fiction".
+# Both route to the model, where the surrounding sentence is available and
+# "interested in" is not hard to understand.
+#
+# Every phrase below was checked against the live corpus before being kept, and
+# most candidates did not survive. The instinct to be generous — a false
+# positive only costs one model call — is wrong here for a different reason:
+# a phrase that matches ordinary sales copy is not a weak signal, it is not a
+# signal, and a list of those is indistinguishable from no list at all.
+# Measured and rejected:
+#
+#   "vill ha"           262 hits, almost all "om du vill ha fler bilder"
+#   "söker"              24 hits, "Söker du en välbalanserad dator?"
+#   "önskar"             16 hits, "om köparen önskar"
+#   "uppgradering till"  25 hits, "säljer inför uppgradering till nytt kort"
+#   "looking for"         2 hits, "unless you are looking for them closely"
+#   "byten"              36 hits, overwhelmingly "Inga byten!" — an ad
+#                        *refusing* trades, whose parts list is the most
+#                        trustworthy kind there is. Precisely inverted.
+TRADE_SIGNALS = (
+    "byta mot", "byte mot", "bytes mot", "byter mot",
+    "i byte", "i utbyte",
+    "intresserad av", "intresserad utav",
+    "eller bättre", "eller liknande",
+    "want to trade", "trade for", "willing to trade", "in trade", "or better",
+)
+
 # The subset of `RISK_SIGNALS` that does not hedge — the seller is saying the
 # machine is broken, is being sold for parts, or is not being vouched for at
 # all. Everything in `RISK_SIGNALS` means "a human should read this"; these
@@ -153,18 +192,24 @@ class Extraction:
     components: tuple[ComponentVerdict, ...]
     item_type: ItemTypeEnum | None
     risk_signals: tuple[str, ...]
+    # Kept apart from `risk_signals` because they are not a risk: an ad asking
+    # to trade is in perfect condition. What they cast doubt on is the *parts
+    # list*, which is a different failure and gets a different published flag.
+    trade_signals: tuple[str, ...] = ()
 
     @property
     def is_confident(self) -> bool:
         """Whether this ad can skip the model entirely.
 
-        Requires all three: something was found, the type is unambiguous, and
-        nothing in the text needs judgement. Any doubt and the answer is no.
+        Requires all four: something was found, the type is unambiguous,
+        nothing in the text needs judgement, and no phrase suggests a named
+        part is wanted rather than owned. Any doubt and the answer is no.
         """
         return (
             bool(self.components)
             and self.item_type is not None
             and not self.risk_signals
+            and not self.trade_signals
         )
 
 
@@ -224,6 +269,12 @@ def find_risk_signals(text: str) -> tuple[str, ...]:
     return tuple(signal for signal in RISK_SIGNALS if signal in lowered)
 
 
+def find_trade_signals(text: str) -> tuple[str, ...]:
+    """Phrases suggesting a named part is wanted rather than owned."""
+    lowered = text.lower()
+    return tuple(signal for signal in TRADE_SIGNALS if signal in lowered)
+
+
 def find_damage_markers(*texts: str | None) -> tuple[str, ...]:
     """Markers saying the item does not work, across every text given.
 
@@ -266,4 +317,5 @@ def extract(title: str, description: str | None = "") -> Extraction:
         components=components,
         item_type=classify(text, components),
         risk_signals=find_risk_signals(text),
+        trade_signals=find_trade_signals(text),
     )

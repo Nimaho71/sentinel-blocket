@@ -18,7 +18,13 @@ from zoneinfo import ZoneInfo
 
 import pytest
 
-from ai.quota import MODELS, ModelQuota, QuotaExhausted, QuotaLedger
+from ai.quota import (
+    MODELS,
+    MODELS_BY_NAME,
+    ModelQuota,
+    QuotaExhausted,
+    QuotaLedger,
+)
 
 PACIFIC = ZoneInfo("US/Pacific")
 PRIMARY = MODELS[0].name
@@ -208,3 +214,60 @@ def test_request_spacing_leaves_headroom_under_the_rpm_limit(rpm, floor):
 
     assert interval > floor
     assert interval < floor * 1.5
+
+
+# ------------------------------------------------- sizing the evaluation stage
+#
+# `ai.batch_processor.affordable_today` turns remaining quota into a number of
+# ads. It replaced a hardcoded 200 that, on a measured run, used 1.8% of the
+# available requests while thousands of scraped ads went unevaluated.
+
+
+def test_remaining_requests_spans_both_primary_pools(ledger):
+    """1 000/day is the whole reason rotation exists — see the module docstring
+    on why two documented pools is legitimate and extra keys are not."""
+    assert ledger.remaining_requests_today() == 1_000
+
+    ledger.record(PRIMARY)
+    ledger.record(SECONDARY)
+    assert ledger.remaining_requests_today() == 998
+
+
+def test_escalation_quota_is_not_offered_to_routine_evaluation(ledger):
+    """Escalation's 20 RPD is the reserve a *failed* batch falls back on. If
+    the routine path could spend it, it would be gone before the ads that
+    actually need it turn up."""
+    escalation_rpd = MODELS_BY_NAME[ESCALATION].rpd
+    assert escalation_rpd > 0
+
+    assert ledger.remaining_requests_today() == 1_000, (
+        "escalation quota must not be counted as available for routine work"
+    )
+
+    for _ in range(escalation_rpd):
+        ledger.record(ESCALATION)
+    assert ledger.remaining_requests_today() == 1_000
+
+
+def test_affordable_today_reserves_headroom_and_scales_by_batch(ledger, monkeypatch):
+    from ai import gemini_client
+    from ai.batch_processor import QUOTA_RESERVE, affordable_today
+
+    monkeypatch.setattr(gemini_client, "_ledger", ledger)
+
+    # 1 000 requests, 20% held back, ten ads per request.
+    assert affordable_today(batch_size=10) == int(1_000 * (1 - QUOTA_RESERVE)) * 10
+    assert affordable_today(batch_size=1) == int(1_000 * (1 - QUOTA_RESERVE))
+
+
+def test_affordable_today_is_zero_when_the_day_is_spent(ledger, monkeypatch):
+    from ai import gemini_client
+    from ai.batch_processor import affordable_today
+
+    monkeypatch.setattr(gemini_client, "_ledger", ledger)
+    for model in (PRIMARY, SECONDARY):
+        for _ in range(MODELS_BY_NAME[model].rpd):
+            ledger.record(model)
+
+    assert ledger.remaining_requests_today() == 0
+    assert affordable_today() == 0
