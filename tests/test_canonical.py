@@ -8,7 +8,11 @@ from __future__ import annotations
 
 import pytest
 
-from pipeline.canonical import canonicalize, is_laptop_listing
+from pipeline.canonical import (
+    canonicalize,
+    is_laptop_listing,
+    names_a_whole_machine,
+)
 
 
 def test_the_real_fragmentation_from_the_live_index_is_fixed():
@@ -196,3 +200,66 @@ class TestLaptopGpusAreADifferentPart:
         body = "Säljer även min gamla laptop separat, hör av dig."
         assert not is_laptop_listing(desktop), "the title alone decides"
         assert is_laptop_listing(body), "but the same words in a title would count"
+
+
+class TestWholeComputersAreNotPriceObservations:
+    """The index takes an ad's price as the price of the part it names, which
+    is only sound when the ad sells that part alone.
+
+    Live damage: the "1TB SSD" index read 5 500 kr across 34 observations,
+    built from listings like "Apple MacBook Pro 16 M3 36GB Ram 1TB ssd" at
+    27 000 kr. They passed the existing multi-part guard because "36GB Ram"
+    carries no DDR generation and so does not match the RAM pattern — a whole
+    laptop extracted exactly one component and looked like an SSD for sale.
+    """
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "Apple MacBook Pro laptop 16 tum M3 36GB Ram 1TB ssd space gray",
+            "mac mini 2018 i5 6 core 16gb 3ghz 1tb ssd",
+            "Dell OptiPlex 3040",
+            "Legion Go 2, Z2 Extreme 8,8\" OLED, 1TB SSD, 32GB RAM",
+            "Acer nitro v15 laptop - rtx 4060",
+            "HP Omen laptop 17 tum svart",
+            "Lenovo ThinkPad L490 14\" FHD Core i7-8565U 16GB 256GB",
+        ],
+    )
+    def test_whole_computers_are_excluded(self, title):
+        assert names_a_whole_machine(title)
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "DDR4 16GB (2x8GB) laptopminne",
+            "Hynix 16gb Dual Channel Laptop ram DDr4",
+            "RAM-minne DDR4  16GB 2x8gb till laptop",
+            "Laptop minnen DDR4 SO-DIMM 8GB och 16GB moduler",
+            "G.Skill Ripjaws 64GB Kit (2 x 32GB) DDR4-3200 SODIMM",
+        ],
+    )
+    def test_parts_for_laptops_are_kept(self, title):
+        """All quoted from the corpus, all 400–2 150 kr — exactly the cheap,
+        correct observations the RAM index most wants. An earlier version of
+        this rule discarded every one of them for saying "laptop"."""
+        assert not names_a_whole_machine(title)
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "ASUS ROG Strix RTX 3080 10GB",
+            "MSI Gaming X Trio RTX 4070 Ti",
+            "Acer Predator XB271HU 27\" skärm",
+            "HP Omen 30L moderkort",
+            "Gigabyte AORUS RTX 3070 Master",
+        ],
+    )
+    def test_component_brand_names_are_not_machines(self, title):
+        """ROG, TUF, Nitro, Predator, Omen and Victus name graphics cards and
+        motherboards at least as often as computers. Matching on them would
+        throw away real component listings — the opposite of the bug."""
+        assert not names_a_whole_machine(title)
+
+    def test_an_empty_title_is_not_a_machine(self):
+        assert not names_a_whole_machine(None)
+        assert not names_a_whole_machine("")

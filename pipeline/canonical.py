@@ -175,6 +175,62 @@ def is_laptop_listing(*texts: str | None) -> bool:
     return _MOBILE_CPU.search(haystack) is not None
 
 
+# Model families that name a complete computer. Deliberately excludes ROG, TUF,
+# Nitro, Predator, Omen and Victus: those are graphics-card and motherboard
+# brands as often as they are machines, and excluding them would throw away
+# genuine component listings.
+_MACHINE_FAMILIES = (
+    "macbook", "imac", "mac mini", "mac studio", "mac pro",
+    "thinkpad", "thinkcentre", "ideapad", "legion go",
+    "elitebook", "probook", "elitedesk", "prodesk",
+    "latitude", "inspiron", "optiplex", "precision 5", "precision 7",
+    "pavilion", "zenbook", "vivobook", "chromebook", "zbook",
+    "surface pro", "surface laptop",
+)
+
+# Phrases that mark a listing as a part *for* a laptop rather than a laptop.
+# Without these, "DDR4 16GB (2x8GB) laptopminne" at 610 kr is discarded as a
+# whole computer — and it is exactly the cheap, correct observation the RAM
+# index most wants.
+_PART_FOR_LAPTOP = (
+    "laptopminne", "laptop minne", "laptop ram", "till laptop", "för laptop",
+    "so-dimm", "sodimm", "bärbar ram", "minne till", "minnen",
+)
+
+
+def names_a_whole_machine(title: str | None) -> bool:
+    """Whether a listing is selling a complete computer rather than a part.
+
+    The market index takes the *ad's price* as the price of the component it
+    names, which is only sound when the ad is selling that component alone.
+
+    Found live, and it was corrupting every valuation on the site. The "1TB SSD"
+    index read 5 500 kr across 34 observations, built from listings like
+    "Apple MacBook Pro 16 M3 36GB Ram 1TB ssd" at 27 000 kr. Those were
+    classified as single components because "36GB Ram" does not match the RAM
+    pattern — it carries no DDR generation — so a whole laptop extracted exactly
+    one part and looked like a legitimate SSD listing. Excluding them moves that
+    median to about 2 000 kr.
+
+    Not the same question as `is_laptop_listing`, which asks what *kind* of
+    machine an ad is selling. A laptop memory stick is a laptop part and a
+    perfectly good price observation; a MacBook is not.
+    """
+    if not title:
+        return False
+    lowered = title.lower()
+
+    if any(family in lowered for family in _MACHINE_FAMILIES):
+        return True
+    # A mobile CPU cannot be bought loose in any quantity worth indexing, so its
+    # presence means the ad is selling the machine around it.
+    if _MOBILE_CPU.search(lowered):
+        return True
+    if any(word in lowered for word in ("laptop", "bärbar", "notebook", "ultrabook")):
+        return not any(phrase in lowered for phrase in _PART_FOR_LAPTOP)
+    return False
+
+
 def _medium(raw: str) -> str:
     """M.2 and NVMe name the same kind of drive; SATA SSD and HDD do not."""
     return "nvme" if raw.lower().replace(".", "") == "m2" else raw.lower()

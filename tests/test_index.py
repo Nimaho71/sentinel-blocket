@@ -783,3 +783,58 @@ class TestExclusiveSlotsAreNotDoubleCounted:
         )
         valuation = BuildValuation(ad_id=1, listed_price_sek=999, parts=parts)
         assert valuation.is_inventory_listing is True
+
+
+class TestOneDriveIsNotTwoDrives:
+    """Storage is not an exclusive slot — a machine really can have an SSD and
+    an HDD — but the same drive is routinely written twice, once by brand and
+    model and once generically. Both were being summed.
+
+    Live: a published listing counted `samsung 970 evo plus 1tb` at 2 000 kr
+    *and* `1tb ssd` at 2 050 kr for one drive, and five others summed
+    `2tb ssd` at 3 190 kr with `2tb nvme` at 12 500 kr.
+    """
+
+    def _drive(self, name, price):
+        return PartValuation(
+            ComponentTypeEnum.STORAGE, name, PriceIndex(name, price, 8)
+        )
+
+    def test_the_same_capacity_written_twice_counts_once(self):
+        parts = (self._drive("2tb ssd", 3190), self._drive("2tb nvme", 12500))
+        valuation = BuildValuation(ad_id=1, listed_price_sek=9000, parts=parts)
+
+        assert valuation.estimated_parts_sek == 3190, "cheapest of the two wins"
+
+    def test_brand_model_and_generic_names_of_one_drive_collapse(self):
+        parts = (
+            self._drive("samsung 970 evo plus 1tb", 2000),
+            self._drive("1tb ssd", 2050),
+        )
+        valuation = BuildValuation(ad_id=1, listed_price_sek=9000, parts=parts)
+
+        assert valuation.estimated_parts_sek == 2000
+
+    def test_two_genuinely_different_drives_both_count(self):
+        """The reason this is capacity-keyed rather than a blanket collapse."""
+        parts = (self._drive("1tb nvme", 800), self._drive("2tb ssd", 1500))
+        valuation = BuildValuation(ad_id=1, listed_price_sek=9000, parts=parts)
+
+        assert valuation.estimated_parts_sek == 2300
+
+    def test_memory_is_untouched_by_the_capacity_rule(self):
+        """Two sticks of RAM really are more RAM. Nobody writes one memory kit
+        twice, so the storage reasoning does not transfer — and an existing
+        test caught the over-reach when it briefly did."""
+        stick = PartValuation(
+            ComponentTypeEnum.RAM, "16gb ddr4", PriceIndex("16gb ddr4", 500, 8)
+        )
+        valuation = BuildValuation(ad_id=1, listed_price_sek=1200, parts=(stick, stick))
+
+        assert valuation.estimated_parts_sek == 1000
+
+    def test_a_drive_with_no_capacity_in_its_name_is_kept(self):
+        parts = (self._drive("kingston ssd", 400), self._drive("1tb ssd", 800))
+        valuation = BuildValuation(ad_id=1, listed_price_sek=2000, parts=parts)
+
+        assert valuation.estimated_parts_sek == 1200

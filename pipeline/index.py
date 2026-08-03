@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import logging
 import math
+import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
@@ -53,7 +54,10 @@ from db.models import (
     StatusEnum,
 )
 
-from pipeline.canonical import canonicalize  # noqa: F401  (re-exported for callers)
+from pipeline.canonical import (  # noqa: F401  (canonicalize re-exported)
+    canonicalize,
+    names_a_whole_machine,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -110,6 +114,44 @@ MIN_PLAUSIBLE_PRICE_RATIO = 0.20
 # two observations are not many. Two observations are ample to establish that a
 # card does not sell for 395 kr.
 MIN_SAMPLES_FOR_IMPLAUSIBILITY = 2
+
+# Capacity written into a part name: "1tb", "512gb", "32gb".
+_CAPACITY = re.compile(r"\b(\d{1,4})\s*(tb|gb)\b", re.IGNORECASE)
+
+
+def _collapse_key(part: "PartValuation") -> object | None:
+    """What makes two extracted parts the *same physical part*, or None to keep.
+
+    Two rules, because slots differ in how many a machine can hold.
+
+    A computer has one processor and one graphics card, so any two entries in
+    those slots are the same part however differently they are written.
+
+    Storage is not exclusive — a real machine has an SSD *and* an HDD — so two
+    drives collapse only when they name the same capacity. Found live: a
+    listing summing `2tb ssd` at 3 190 kr and `2tb nvme` at 12 500 kr for one
+    drive, and another summing `samsung 970 evo plus 1tb` and `1tb ssd`. One
+    drive, described twice, counted twice, and the error only ever runs upward
+    — which reads as a bargain and sorts to the top of the page.
+
+    **Memory is deliberately excluded from the capacity rule.** Two entries of
+    "16gb ddr4" plausibly are two sticks, and 32 GB of RAM is 32 GB. Storage is
+    different because the same drive is routinely written twice — once by brand
+    and model, once generically — while nobody names one memory kit twice.
+    Every case measured on the live corpus was storage; extending this to RAM
+    was an over-reach that an existing test caught.
+
+    A drive with no capacity in its name is never collapsed: there is nothing
+    to match on, and guessing would merge two real parts into one.
+    """
+    if part.component_type in EXCLUSIVE_SLOTS:
+        return part.component_type
+    if part.component_type is not ComponentTypeEnum.STORAGE:
+        return None
+    match = _CAPACITY.search(part.canonical_name or "")
+    if match is None:
+        return None
+    return (part.component_type, match.group(1), match.group(2).lower())
 
 # Slots a single computer can only hold one of, and how many distinct models an
 # ad may name before it stops being an advert for a computer.
@@ -217,6 +259,7 @@ async def record_observations(session: AsyncSession, *, only_ad_id: int | None =
             Ad.condition,
             Ad.source,
             Ad.external_id,
+            Ad.title,
         )
         .join(Ad, Ad.id == ExtractedComponent.ad_id)
         .where(Ad.item_type == ItemTypeEnum.SINGLE_COMPONENT)
@@ -226,6 +269,19 @@ async def record_observations(session: AsyncSession, *, only_ad_id: int | None =
         stmt = stmt.where(Ad.id == only_ad_id)
 
     rows = (await session.execute(stmt)).all()
+
+    # An observation is only sound if the ad's price *is* the part's price, and
+    # for a whole computer it is not. Filtered here rather than at
+    # classification, because the classifier is right that these ads name one
+    # recognisable part — the error is treating a MacBook's asking price as
+    # what its SSD costs. See `names_a_whole_machine` for the live damage.
+    kept = [row for row in rows if not names_a_whole_machine(row.title)]
+    if len(kept) != len(rows):
+        logger.info(
+            "Index: skipped %d observations from whole-computer listings.",
+            len(rows) - len(kept),
+        )
+    rows = kept
     if not rows:
         return 0
 
@@ -238,7 +294,7 @@ async def record_observations(session: AsyncSession, *, only_ad_id: int | None =
             "source": source,
             "source_ref": external_id,
         }
-        for name, ctype, price, condition, source, external_id in rows
+        for name, ctype, price, condition, source, external_id, _title in rows
     ]
 
     result = await session.execute(
@@ -351,21 +407,23 @@ class BuildValuation:
         # the tuple — and an identity-keyed version of this passed the live
         # example while silently failing on the simpler case of the exact same
         # object listed twice.
-        winner: dict[ComponentTypeEnum, int] = {}
+        winner: dict[object, int] = {}
+        collapsible: set[int] = set()
         for i, part in enumerate(self.parts):
-            if part.component_type not in EXCLUSIVE_SLOTS:
+            key = _collapse_key(part)
+            if key is None:
                 continue
-            best = winner.get(part.component_type)
+            collapsible.add(i)
+            best = winner.get(key)
             if best is None or _price_or_inf(part) < _price_or_inf(self.parts[best]):
-                winner[part.component_type] = i
+                winner[key] = i
 
         keep = set(winner.values())
         # Rebuilt in the original order, so the component list in the UI still
         # reads in the order the extractor found things.
         return tuple(
-            part
-            for i, part in enumerate(self.parts)
-            if part.component_type not in EXCLUSIVE_SLOTS or i in keep
+            part for i, part in enumerate(self.parts)
+            if i not in collapsible or i in keep
         )
 
     @property
