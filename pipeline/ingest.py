@@ -43,7 +43,9 @@ class SearchTarget:
 
     query: str
     component_only: bool = False
-    pages: int = 1
+    # A ceiling, not a quota. Paging stops as soon as a page comes back short,
+    # so this only bounds the queries that genuinely have more to give.
+    max_pages: int = 1
 
 
 @dataclass
@@ -56,6 +58,11 @@ class IngestStats:
     already_known: int = 0
     detail_fetched: int = 0
     detail_missing: int = 0
+    # Ads this run already fetched under a different query. Counted rather than
+    # merely avoided: the number is a direct measure of how much the query list
+    # overlaps itself, which is the only way to tell whether adding a query
+    # bought new coverage or just re-bought the old.
+    duplicates_skipped: int = 0
     failures: int = 0
     halted_early: bool = False
     # A run that ran out of time rather than out of work. Distinct from
@@ -76,6 +83,7 @@ class IngestStats:
         return (
             f"{self.searched} searches -> {self.found} ads found, "
             f"{self.filtered_out} filtered, {self.already_known} known, "
+            f"{self.duplicates_skipped} dup, "
             f"{self.detail_fetched} fetched, {self.detail_missing} gone, "
             f"{self.failures} failed"
             + (
@@ -171,6 +179,17 @@ def ingest(
     stats = IngestStats()
     records: list[AdRecord] = []
 
+    # `is_known` is a snapshot of the database taken before the sweep starts, so
+    # it cannot know about an ad this run has *just* fetched. Without this set,
+    # a genuinely new ad returned by two queries fails the known check both
+    # times and is fetched twice at full price.
+    #
+    # Measured mid-run: 927 detail requests for 759 distinct ads — 18% wasted,
+    # and that was before the sweep reached the GPU block, where "grafikkort"
+    # overlaps all 36 model-specific queries and "RTX 3060" overlaps "RTX 3060
+    # Ti". Detail is the expensive half, one request per ad.
+    seen: set[str] = set()
+
     ordered = rotate_targets(targets, rotate)
     stats.targets_total = len(ordered)
     deadline = None if max_duration_s is None else clock() + max_duration_s
@@ -186,7 +205,13 @@ def ingest(
                 stats.targets_swept, stats.targets_total,
             )
             break
-        for page in range(1, target.pages + 1):
+        # The widest full page this query has returned, which is the API's page
+        # size as observed rather than as assumed. A page narrower than that is
+        # the last one. Measured rather than hardcoded to 53: pinning the
+        # number means a silent halving of coverage on the day Blocket changes
+        # it, and every run would still report success.
+        page_size = 0
+        for page in range(1, target.max_pages + 1):
             if out_of_time():
                 stats.stopped_at_deadline = True
                 break
@@ -221,12 +246,20 @@ def ingest(
                 if is_known is not None and is_known(summary.external_id):
                     stats.already_known += 1
                     continue
+                if summary.external_id in seen:
+                    stats.duplicates_skipped += 1
+                    continue
                 # The dominant cost in the whole run: one request per new ad.
                 # Checked here so a capped sweep stops on a whole record.
                 if out_of_time():
                     stats.stopped_at_deadline = True
                     break
 
+                # Marked before the request, not after. A detail fetch that
+                # fails or returns a removed listing has still been paid for,
+                # and retrying it under the next query would spend the same
+                # request to get the same nothing.
+                seen.add(summary.external_id)
                 try:
                     record = source.fetch_detail(summary)
                 except CircuitOpen as exc:
@@ -248,6 +281,19 @@ def ingest(
                 records.append(record)
                 if on_record is not None:
                     on_record(record)
+
+            # Stop as soon as the results run out, rather than walking to the
+            # ceiling regardless. Measured on a real sweep: 14 of 41 search
+            # requests — 34% — returned zero ads, because "moderkort AM4" has
+            # 27 listings and was being asked for four pages of them. Those are
+            # requests spent on Blocket for nothing.
+            #
+            # A page narrower than the widest one seen is the last page: the
+            # corpus bears this out ("nätaggregat 650W" gave 50 then 0,
+            # "nätaggregat 750W" gave 53, 20, then 0).
+            if not summaries or len(summaries) < page_size:
+                break
+            page_size = max(page_size, len(summaries))
 
         # Counted only once every page of this query has been walked, so a
         # query abandoned halfway through its budget is not reported as swept.
@@ -280,8 +326,18 @@ def ingest(
 # reach a model at all. The real ceiling is the 2.4-second request spacing,
 # which is an *ethical commitment* (ETHICS.md), not a technical limit. So the
 # right response to needing more data is a longer run, never a faster one.
-COMPONENT_PAGES = 4
-BUILD_PAGES = 5
+# These became *ceilings* once paging learned to stop on a short page, which
+# changes what a large number costs. Under fixed paging, 4 was simultaneously
+# too many and too few: "moderkort AM4" has 27 listings and was asked for four
+# pages of them, while "SSD 1TB", "NVMe 1TB", "DDR5 32GB" and "moderkort" were
+# all still returning full pages at page 4 and being cut off mid-stream. No
+# single number was right, because the queries are not alike.
+#
+# Now a thin query costs one request and a deep one runs until it is genuinely
+# exhausted, so this only needs to be high enough not to truncate the broadest
+# queries. It bounds a pathological case; it does not ration.
+COMPONENT_PAGES = 12
+BUILD_PAGES = 12
 
 
 def pc_search_targets() -> list[SearchTarget]:
@@ -330,8 +386,8 @@ def pc_search_targets() -> list[SearchTarget]:
     ]
 
     return [
-        SearchTarget(q, component_only=True, pages=COMPONENT_PAGES)
+        SearchTarget(q, component_only=True, max_pages=COMPONENT_PAGES)
         for q in components
     ] + [
-        SearchTarget(q, component_only=False, pages=BUILD_PAGES) for q in builds
+        SearchTarget(q, component_only=False, max_pages=BUILD_PAGES) for q in builds
     ]

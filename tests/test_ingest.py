@@ -126,7 +126,7 @@ def test_removed_listings_are_counted_not_returned():
 def test_multiple_pages_are_swept():
     src = FakeSource(pages={("q", 1): [summary("a")], ("q", 2): [summary("b")]})
 
-    records, _ = ingest(src, [SearchTarget("q", pages=2)])
+    records, _ = ingest(src, [SearchTarget("q", max_pages=2)])
 
     assert [r.external_id for r in records] == ["a", "b"]
 
@@ -234,9 +234,12 @@ def test_component_queries_are_paged_deeply_enough_to_feed_the_index():
     targets = pc_search_targets()
     components = [t for t in targets if t.component_only]
 
-    assert all(t.pages >= 3 for t in components), "component queries too shallow"
-    # ~50 results a page, so this is the ceiling on samples per part per run.
-    assert sum(t.pages for t in components) >= 150
+    assert all(t.max_pages >= 8 for t in components), "component ceiling too low"
+    # A ceiling rather than a quota: paging stops on a short page, so a thin
+    # query costs one request no matter how high this is set. What it must not
+    # do is truncate the broad queries, which were still returning full pages
+    # at page 4 under the old fixed depth.
+    assert all(t.max_pages >= 8 for t in targets if not t.component_only)
 
 
 def test_the_sweep_covers_the_used_market_not_the_current_one():
@@ -494,3 +497,180 @@ class TestRotation:
 
         assert swept == {"a", "b"}
         assert not swept & {"c", "d", "e"}
+
+
+class TestPagingStopsWhenTheResultsDo:
+    """Fixed paging was wrong in both directions at once.
+
+    Measured on a real sweep: 14 of 41 search requests — 34% — came back empty,
+    because queries like "moderkort AM4" have 27 listings and were being asked
+    for four pages of them. At the same time "SSD 1TB", "NVMe 1TB", "DDR5 32GB"
+    and "moderkort" were all still returning *full* pages at page 4 and being
+    cut off mid-stream. No single constant is right, because the queries are
+    not alike.
+    """
+
+    def test_a_full_page_is_followed_by_another(self):
+        src = FakeSource(pages={
+            ("q", 1): [summary(f"a{i}") for i in range(50)],
+            ("q", 2): [summary(f"b{i}") for i in range(50)],
+            ("q", 3): [summary("c")],
+        })
+
+        records, stats = ingest(src, [SearchTarget("q", max_pages=12)])
+
+        assert stats.searched == 3
+        assert len(records) == 101
+
+    def test_a_short_page_ends_the_query(self):
+        """53, 20, then stop — "nätaggregat 750W" exactly. The third request
+        that used to follow returned nothing, twice."""
+        src = FakeSource(pages={
+            ("q", 1): [summary(f"a{i}") for i in range(53)],
+            ("q", 2): [summary(f"b{i}") for i in range(20)],
+            ("q", 3): [summary("never-reached")],
+        })
+
+        records, stats = ingest(src, [SearchTarget("q", max_pages=12)])
+
+        assert stats.searched == 2, "a short page means there is no next page"
+        assert "never-reached" not in [r.external_id for r in records]
+
+    def test_an_empty_page_ends_the_query(self):
+        src = FakeSource(pages={
+            ("q", 1): [summary(f"a{i}") for i in range(53)],
+            ("q", 2): [],
+            ("q", 3): [summary("never-reached")],
+        })
+
+        _, stats = ingest(src, [SearchTarget("q", max_pages=12)])
+
+        assert stats.searched == 2
+
+    def test_a_thin_query_costs_one_wasted_request_not_three(self):
+        """The "moderkort AM4" shape: 27 results, then nothing.
+
+        Page one cannot be judged — there is no page size to compare against
+        yet — so one empty page is still requested. That is the honest cost of
+        not hardcoding the API's page size, and it is one request rather than
+        the three the old fixed depth spent.
+        """
+        src = FakeSource(pages={("q", 1): [summary(f"a{i}") for i in range(27)]})
+
+        _, stats = ingest(src, [SearchTarget("q", max_pages=12)])
+
+        assert stats.searched == 2
+
+    def test_the_ceiling_still_binds(self):
+        """A query that never runs short must not page forever."""
+        src = FakeSource(pages={
+            ("q", n): [summary(f"p{n}-{i}") for i in range(50)] for n in range(1, 30)
+        })
+
+        _, stats = ingest(src, [SearchTarget("q", max_pages=6)])
+
+        assert stats.searched == 6
+
+    def test_the_page_size_is_learned_not_assumed(self):
+        """Deliberately not hardcoded to 53.
+
+        Pinning the API's page size means that the day Blocket changes it, every
+        query stops after page one and each run still reports success — a silent
+        halving of coverage, which is this project's recurring failure mode.
+        Here a page size of 8 works exactly as 53 does.
+        """
+        src = FakeSource(pages={
+            ("q", 1): [summary(f"a{i}") for i in range(8)],
+            ("q", 2): [summary(f"b{i}") for i in range(8)],
+            ("q", 3): [summary("c")],
+            ("q", 4): [summary("never-reached")],
+        })
+
+        _, stats = ingest(src, [SearchTarget("q", max_pages=12)])
+
+        assert stats.searched == 3
+
+
+class TestAnAdIsFetchedOncePerRun:
+    """`is_known` is a snapshot taken before the sweep, so it cannot know about
+    an ad this run has just fetched.
+
+    Measured mid-run on live data: 927 detail requests for 759 distinct ads,
+    18% of them repeats — and that was before the sweep reached the GPU
+    queries, where "grafikkort" overlaps every model-specific query.
+    """
+
+    def test_the_same_ad_under_two_queries_costs_one_request(self):
+        src = FakeSource(pages={
+            ("gpu", 1): [summary("shared"), summary("only-a")],
+            ("grafikkort", 1): [summary("shared"), summary("only-b")],
+        })
+
+        records, stats = ingest(
+            src, [SearchTarget("gpu"), SearchTarget("grafikkort")]
+        )
+
+        assert stats.detail_fetched == 3
+        assert stats.duplicates_skipped == 1
+        assert sorted(r.external_id for r in records) == ["only-a", "only-b", "shared"]
+
+    def test_the_duplicate_is_counted_not_merely_avoided(self):
+        """The number measures how much the query list overlaps itself, which
+        is the only way to tell whether adding a query bought new coverage or
+        re-bought the old."""
+        src = FakeSource(pages={
+            ("a", 1): [summary("x")],
+            ("b", 1): [summary("x")],
+            ("c", 1): [summary("x")],
+        })
+
+        _, stats = ingest(src, [SearchTarget(q) for q in ("a", "b", "c")])
+
+        assert stats.duplicates_skipped == 2
+        assert "2 dup" in stats.summary()
+
+    def test_a_failed_fetch_is_not_retried_under_the_next_query(self):
+        """The request was paid for whether or not it returned anything.
+        Retrying it spends a second one to get the same nothing."""
+        class AlwaysFails(FakeSource):
+            def fetch_detail(self, s):
+                self.detail_calls.append(s.external_id)
+                raise SourceError("detail blew up")
+
+        src = AlwaysFails(pages={
+            ("a", 1): [summary("bad")],
+            ("b", 1): [summary("bad")],
+        })
+
+        _, stats = ingest(src, [SearchTarget("a"), SearchTarget("b")])
+
+        assert stats.failures == 1, "the failure must not be repeated"
+        assert stats.duplicates_skipped == 1
+
+    def test_a_removed_listing_is_not_re_requested(self):
+        src = FakeSource(
+            pages={("a", 1): [summary("gone")], ("b", 1): [summary("gone")]},
+            missing={"gone"},
+        )
+
+        _, stats = ingest(src, [SearchTarget("a"), SearchTarget("b")])
+
+        assert stats.detail_missing == 1
+        assert stats.duplicates_skipped == 1
+
+    def test_ads_already_in_the_database_are_still_counted_separately(self):
+        """`already_known` and `duplicates_skipped` answer different questions —
+        one is "we had it yesterday", the other "we fetched it ten minutes ago".
+        Conflating them would hide either a stale corpus or a redundant query."""
+        src = FakeSource(pages={
+            ("a", 1): [summary("old"), summary("new")],
+            ("b", 1): [summary("old"), summary("new")],
+        })
+
+        _, stats = ingest(
+            src, [SearchTarget("a"), SearchTarget("b")], is_known={"old"}.__contains__
+        )
+
+        assert stats.already_known == 2
+        assert stats.duplicates_skipped == 1
+        assert stats.detail_fetched == 1
