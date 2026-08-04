@@ -49,6 +49,11 @@ STAGES = ("ingest", "evaluate", "index", "basket", "publish", "janitor", "all")
 # `stage_basket` and `api/routes.py` for why it must never reach ingest.
 DEFAULT_BUDGET_SEK = 10_000
 
+# How many records to hold before writing them. Matches `persist_records`'s own
+# batch size, so a flush is exactly one transaction. Small enough that a crash
+# costs at most this many detail fetches; large enough to avoid an fsync per ad.
+PERSIST_EVERY = 50
+
 
 @dataclass(frozen=True, slots=True)
 class RunOptions:
@@ -84,15 +89,47 @@ async def stage_ingest(opts: RunOptions) -> bool:
     if opts.limit:
         targets = targets[:opts.limit]
 
-    records, stats = ingest(
+    # Persisted as the sweep runs, not after it. `ingest` accumulates records in
+    # memory and `persist_records` used to be called once at the end, so a power
+    # cut at minute 100 of 120 discarded every detail fetch — hours of Blocket's
+    # bandwidth, re-fetched from scratch on the next run. A circuit-breaker halt
+    # was always handled (the records are returned and written); an abrupt death
+    # was not, and that is the case a scheduled overnight job actually meets.
+    #
+    # `ingest` is synchronous and blocking, so it runs on a worker thread and
+    # hands each batch back to the event loop to write. The alternative — a
+    # second, synchronous SQLite writer — would mean a duplicate copy of the
+    # upsert logic, which is how the canonical-name bug happened.
+    loop = asyncio.get_running_loop()
+    buffered: list = []
+
+    def flush() -> None:
+        if not buffered:
+            return
+        batch, buffered[:] = list(buffered), []
+        asyncio.run_coroutine_threadsafe(
+            persist_records(AsyncSessionLocal, batch), loop
+        ).result()
+
+    def on_record(record) -> None:
+        buffered.append(record)
+        if len(buffered) >= PERSIST_EVERY:
+            flush()
+
+    records, stats = await asyncio.to_thread(
+        ingest,
         BlocketSource(),
         targets,
         is_known=known.__contains__,
+        # A dry run must leave nothing behind, so it keeps the old shape:
+        # collect everything, write none of it.
+        on_record=None if opts.dry_run else on_record,
         max_duration_s=(
             opts.max_duration_min * 60 if opts.max_duration_min else None
         ),
         rotate=opts.rotate,
     )
+    flush()
     logger.info(stats.summary())
     if stats.stopped_at_deadline:
         # Said plainly, because a partial sweep that reports success is how a
@@ -107,9 +144,8 @@ async def stage_ingest(opts: RunOptions) -> bool:
 
     if opts.dry_run:
         logger.info("[dry run] %d records not written", len(records))
-        return not stats.halted_early
-
-    await persist_records(AsyncSessionLocal, records)
+    else:
+        logger.info("Persisted %d records incrementally during the sweep.", len(records))
     # A halted sweep is a partial sweep. Say so, and do not let later stages
     # report success on top of it.
     return not stats.halted_early

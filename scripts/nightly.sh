@@ -55,9 +55,22 @@ die() { log "FAILED: $*"; exit 1; }
 # corrupt an index, and an overrunning run must not have tomorrow's start on
 # top of it.
 if ! mkdir "$LOCK" 2>/dev/null; then
-    die "another run holds $LOCK (started $(date -r "$LOCK" '+%H:%M:%S')). Remove it if that run is dead."
+    # A held lock is not proof of a live run. The trap below never fires on a
+    # power cut or a SIGKILL, so the directory outlives the process — and a
+    # lock that only a human can clear turns one crash into a pipeline that is
+    # silently dead every night from then on. Exactly the failure this project
+    # keeps meeting: everything reports fine, the data is just old.
+    holder=$(cat "$LOCK/pid" 2>/dev/null || echo "")
+    if [ -n "$holder" ] && kill -0 "$holder" 2>/dev/null; then
+        die "run $holder still holds $LOCK (started $(date -r "$LOCK" '+%H:%M:%S'))"
+    fi
+    log "WARNING: reclaiming $LOCK from dead process ${holder:-unknown} —"
+    log "         the previous run was killed rather than finishing."
+    rm -rf "$LOCK"
+    mkdir "$LOCK" 2>/dev/null || die "could not reclaim $LOCK"
 fi
-trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
+echo "$$" > "$LOCK/pid"
+trap 'rm -rf "$LOCK" 2>/dev/null || true' EXIT
 
 log "=== nightly run starting (max-duration ${MAX_DURATION_MIN}m) ==="
 

@@ -674,3 +674,59 @@ class TestAnAdIsFetchedOncePerRun:
         assert stats.already_known == 2
         assert stats.duplicates_skipped == 1
         assert stats.detail_fetched == 1
+
+
+class TestWorkSurvivesAnAbruptDeath:
+    """`ingest` used to hand its whole result back at the end, and the caller
+    wrote it once, after the sweep. A power cut at minute 100 of 120 therefore
+    discarded every detail fetch — hours of Blocket's bandwidth, re-fetched
+    from scratch next run.
+
+    A circuit-breaker halt was always safe: the records are returned and
+    written. What was not safe is the case a scheduled overnight job actually
+    meets, where the process simply stops existing.
+    """
+
+    def test_records_are_handed_over_before_an_unexpected_crash(self):
+        saved: list[str] = []
+
+        class DiesHalfway(FakeSource):
+            def fetch_detail(self, s):
+                if s.external_id == "boom":
+                    raise KeyboardInterrupt("power cut")
+                return record_for(s)
+
+        src = DiesHalfway(pages={("q", 1): [
+            summary("a"), summary("b"), summary("boom"), summary("c"),
+        ]})
+
+        with pytest.raises(KeyboardInterrupt):
+            ingest(src, [SearchTarget("q")], on_record=saved.append.__call__)
+
+        assert [r.external_id for r in saved] == ["a", "b"], (
+            "everything fetched before the crash must already be in the caller's hands"
+        )
+
+    def test_a_halted_sweep_still_reports_what_it_saved(self):
+        """The circuit-breaker path, which was already safe — pinned so the new
+        incremental route does not quietly regress it."""
+        saved: list[str] = []
+
+        class HaltsAfterOne(FakeSource):
+            def fetch_detail(self, s):
+                self.detail_calls.append(s.external_id)
+                if len(self.detail_calls) > 1:
+                    raise CircuitOpen("tripped")
+                return record_for(s)
+
+        src = HaltsAfterOne(pages={("q", 1): [
+            summary("a"), summary("b"), summary("c"),
+        ]})
+
+        records, stats = ingest(
+            src, [SearchTarget("q")], on_record=lambda r: saved.append(r.external_id)
+        )
+
+        assert stats.halted_early
+        assert saved == [r.external_id for r in records]
+        assert saved, "a halted run must still have handed over its partial work"
