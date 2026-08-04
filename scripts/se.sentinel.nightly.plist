@@ -24,8 +24,16 @@
 
       sudo pmset repeat wakeorpoweron MTWRFSU 02:55:00
 
-  Replace NILS_HOME below if the repository ever moves; launchd does no shell
-  expansion, so ~ and $HOME are literal characters here.
+  The repository deliberately does NOT live under ~/Documents. macOS TCC treats
+  Desktop, Documents and Downloads as protected, and a LaunchAgent gets no
+  access to them: the job failed with exit 126 and "Operation not permitted"
+  before it read a single line. The alternative was granting Full Disk Access
+  to /bin/bash, which would hand every bash script on the machine access to
+  everything. Moving the repository costs nothing and grants nothing.
+
+  Paths are absolute below; launchd does no shell expansion, so ~ and $HOME are
+  literal characters here. `nightly.sh` derives its own location, so it needs no
+  edit if the repository moves again -- only these two entries do.
 -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -36,14 +44,14 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/nils/Documents/Coding_projects/sentinel-blocket/scripts/nightly.sh</string>
+        <string>/Users/nils/Projects/sentinel-blocket/scripts/nightly.sh</string>
     </array>
 
     <!-- Not cosmetic. QUOTA_LEDGER_PATH and several other defaults resolve
          against the working directory, and launchd would otherwise start the
          job in `/`. The script sets an absolute path too; both, deliberately. -->
     <key>WorkingDirectory</key>
-    <string>/Users/nils/Documents/Coding_projects/sentinel-blocket</string>
+    <string>/Users/nils/Projects/sentinel-blocket</string>
 
     <key>StartCalendarInterval</key>
     <dict>

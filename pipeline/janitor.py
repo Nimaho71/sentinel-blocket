@@ -28,7 +28,7 @@ import logging
 import random
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Awaitable, Callable
+from typing import Collection, Awaitable, Callable
 
 import httpx
 from sqlalchemy import delete, select
@@ -103,10 +103,26 @@ async def check_liveness(
     session_factory: async_sessionmaker,
     *,
     limit: int = 500,
+    published_ids: Collection[int] = (),
     client: httpx.AsyncClient | None = None,
     sleep: Callable[[float], Awaitable[None]] = asyncio.sleep,
 ) -> JanitorStats:
     """Re-check active ads one at a time, marking removed ones SOLD.
+
+    `published_ids` are verified first, whatever their last-checked time. **They
+    are the only ads a visitor can see**, so staleness there is the only
+    staleness anyone actually experiences.
+
+    Oldest-first alone is the fair order and the wrong one. Found live: 4 083
+    active ads against a budget of 500 a night is a full pass every eight
+    nights, and the corpus grows faster than the janitor retires it, so the
+    backlog never closes. Two listings on the published board had already gone
+    — one 404, one marked *Såld* — and would have stayed up for another week
+    while the janitor diligently re-checked thousands of ads nobody could see.
+
+    The published set is roughly a hundred ads, so covering all of it costs a
+    few minutes and leaves most of the budget for the rotation behind it.
+    Nothing is skipped; the order just follows where being wrong is visible.
 
     `client` and `sleep` are injectable for the same reason they are in
     `sources/throttle.py`: the behaviour worth testing is the pacing and the
@@ -115,13 +131,31 @@ async def check_liveness(
     stats = JanitorStats()
 
     async with session_factory() as session:
-        stmt = (
+        active = (
             select(Ad.id, Ad.url)
             .where(Ad.status == StatusEnum.ACTIVE)
             .order_by(Ad.last_checked_at.asc())  # Oldest checks first.
-            .limit(limit)
         )
-        targets = list((await session.execute(stmt)).all())
+        targets: list = []
+        if published_ids:
+            targets = list(
+                (
+                    await session.execute(
+                        active.where(Ad.id.in_(published_ids)).limit(limit)
+                    )
+                ).all()
+            )
+            logger.info(
+                "Verifying %d published ads before the rotation.", len(targets)
+            )
+
+        # Backfill the remaining budget with the ordinary rotation, skipping
+        # anything already queued above.
+        remaining = limit - len(targets)
+        if remaining > 0:
+            seen = {row.id for row in targets}
+            rest = (await session.execute(active.limit(limit + len(seen)))).all()
+            targets += [row for row in rest if row.id not in seen][:remaining]
 
     if not targets:
         logger.info("No active ads to verify.")

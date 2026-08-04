@@ -38,7 +38,12 @@ from pipeline.ingest import ingest, pc_search_targets
 from pipeline.janitor import check_liveness, enforce_retention
 from pipeline.persist import persist_records
 from pipeline.profiles import PROFILES
-from pipeline.publish import DEFAULT_OUTPUT, RedactionError, publish
+from pipeline.publish import (
+    DEFAULT_OUTPUT,
+    RedactionError,
+    publish,
+    published_ad_ids,
+)
 from sources.blocket import BlocketSource
 
 logger = logging.getLogger(__name__)
@@ -103,18 +108,26 @@ async def stage_ingest(opts: RunOptions) -> bool:
     loop = asyncio.get_running_loop()
     buffered: list = []
 
-    def flush() -> None:
-        if not buffered:
-            return
+    def _take() -> list:
         batch, buffered[:] = list(buffered), []
-        asyncio.run_coroutine_threadsafe(
-            persist_records(AsyncSessionLocal, batch), loop
-        ).result()
+        return batch
 
     def on_record(record) -> None:
+        """Called from the worker thread, never from the event loop.
+
+        `run_coroutine_threadsafe(...).result()` is correct here and *only*
+        here. Calling it from the loop thread deadlocks: the coroutine can only
+        be scheduled by the loop that is now blocked waiting for it. That is not
+        hypothetical — the first version of this drained the final batch the
+        same way, on the loop thread, and a live run hung at 0% CPU immediately
+        after a clean 77/77 sweep, holding its lock until it was killed. The
+        final drain is awaited below instead.
+        """
         buffered.append(record)
         if len(buffered) >= PERSIST_EVERY:
-            flush()
+            asyncio.run_coroutine_threadsafe(
+                persist_records(AsyncSessionLocal, _take()), loop
+            ).result()
 
     records, stats = await asyncio.to_thread(
         ingest,
@@ -129,7 +142,9 @@ async def stage_ingest(opts: RunOptions) -> bool:
         ),
         rotate=opts.rotate,
     )
-    flush()
+    # Back on the event loop, so this is a plain await. See `on_record`.
+    if buffered:
+        await persist_records(AsyncSessionLocal, _take())
     logger.info(stats.summary())
     if stats.stopped_at_deadline:
         # Said plainly, because a partial sweep that reports success is how a
@@ -252,7 +267,14 @@ async def stage_janitor(opts: RunOptions) -> bool:
         logger.info("[dry run] skipping janitor (it mutates ad status)")
         return True
 
-    liveness = await check_liveness(AsyncSessionLocal, limit=opts.limit or 500)
+    # Read back from the published file rather than recomputing the ranking:
+    # it is the literal artifact a visitor loads, so it cannot disagree with
+    # what they see. The janitor runs after publish, so it is this run's file.
+    liveness = await check_liveness(
+        AsyncSessionLocal,
+        limit=opts.limit or 500,
+        published_ids=published_ad_ids(DEFAULT_OUTPUT),
+    )
     logger.info(liveness.summary())
     retention = await enforce_retention(AsyncSessionLocal)
     logger.info(retention.summary())

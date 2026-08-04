@@ -194,3 +194,102 @@ async def test_retention_purges_long_sold_ads(session_factory):
     async with session_factory() as session:
         remaining = (await session.execute(select(Ad))).scalars().all()
     assert len(remaining) == 1
+
+
+class TestPublishedAdsAreVerifiedFirst:
+    """Oldest-first alone is the fair order and the wrong one.
+
+    Live: 4 083 active ads against a budget of 500 a night is a full pass every
+    eight nights, and the corpus grows faster than the janitor retires it. Two
+    listings on the published board had already gone — one 404, one marked
+    *Såld* — and would have stayed up for another week while the janitor
+    re-checked thousands of ads nobody could see.
+    """
+
+    async def test_a_published_ad_jumps_the_queue(self, session_factory, sleeps):
+        await seed_active(session_factory, 20)
+        async with session_factory() as session:
+            rows = (await session.execute(
+                select(Ad.id, Ad.url).order_by(Ad.last_checked_at.asc())
+            )).all()
+        # Last in an oldest-first queue, so it would not be reached at limit=3.
+        last_id, last_url = rows[-1]
+
+        def handler(request):
+            return httpx.Response(200)
+
+        client, transport = client_for(handler)
+        async with client:
+            await check_liveness(
+                session_factory, limit=3, published_ids=[last_id],
+                client=client, sleep=sleeps,
+            )
+
+        assert len(transport.urls) == 3
+        # Compared by URL, not by id: the url carries `external_id`, which is a
+        # different number, and an earlier version of this test asserted the two
+        # against each other and failed on a correct result.
+        assert transport.urls[0] == last_url, (
+            "the ad a visitor can see must be checked before the rotation"
+        )
+
+    async def test_the_rest_of_the_budget_still_goes_to_the_rotation(
+        self, session_factory, sleeps
+    ):
+        """Prioritising must not become skipping. The 4 000 ads nobody sees
+        still need to be retired, or the corpus never converges."""
+        await seed_active(session_factory, 20)
+        async with session_factory() as session:
+            ids = [r[0] for r in (await session.execute(select(Ad.id))).all()]
+
+        def handler(request):
+            return httpx.Response(200)
+
+        client, transport = client_for(handler)
+        async with client:
+            stats = await check_liveness(
+                session_factory, limit=5, published_ids=[ids[-1]],
+                client=client, sleep=sleeps,
+            )
+
+        assert stats.checked == 5
+        assert len({u for u in transport.urls}) == 5, "no ad checked twice"
+
+    async def test_published_ads_are_not_checked_twice(self, session_factory, sleeps):
+        """A published ad that is *also* the oldest must not consume two slots
+        of a budget the whole point of which is that it is scarce."""
+        await seed_active(session_factory, 6)
+        async with session_factory() as session:
+            ids = [r[0] for r in (await session.execute(select(Ad.id))).all()]
+        oldest = ids[0]
+
+        def handler(request):
+            return httpx.Response(200)
+
+        client, transport = client_for(handler)
+        async with client:
+            stats = await check_liveness(
+                session_factory, limit=4, published_ids=[oldest],
+                client=client, sleep=sleeps,
+            )
+
+        assert stats.checked == 4
+        assert len(set(transport.urls)) == 4
+
+    async def test_no_published_ids_behaves_exactly_as_before(
+        self, session_factory, sleeps
+    ):
+        """A first run, before anything has been published, is not a failure."""
+        await seed_active(session_factory, 5)
+
+        def handler(request):
+            return httpx.Response(200)
+
+        client, transport = client_for(handler)
+        async with client:
+            stats = await check_liveness(
+                session_factory, limit=3, client=client, sleep=sleeps
+            )
+
+        assert stats.checked == 3
+        assert len(transport.urls) == 3

@@ -556,3 +556,27 @@ async def publish(
 # `verify_file` is re-exported from `pipeline.redact` above, so callers that
 # think of verification as part of publishing can find it here, while CI can
 # import it without the database stack.
+
+
+def published_ad_ids(path: Path = DEFAULT_OUTPUT) -> tuple[int, ...]:
+    """Ad ids in the published snapshot, or empty if there is not one yet.
+
+    Reads the finished artifact rather than re-deriving the ranking. Two copies
+    of "which ads are on the board" would drift, and the whole point of the
+    caller — `pipeline.run.stage_janitor` — is to verify precisely what a
+    visitor sees.
+
+    Never raises. A missing or malformed file means "no priorities known", and
+    the janitor falls back to its ordinary oldest-first rotation; a first run,
+    before anything has been published, must not be a failure.
+    """
+    try:
+        snapshot = json.loads(path.read_text(encoding="utf-8"))
+        return tuple(
+            int(deal["id"])
+            for deal in snapshot.get("deals", ())
+            if str(deal.get("id", "")).isdigit()
+        )
+    except (OSError, ValueError, TypeError):
+        logger.warning("No usable snapshot at %s; janitor will not prioritise.", path)
+        return ()
