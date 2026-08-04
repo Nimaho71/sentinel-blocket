@@ -293,3 +293,76 @@ class TestPublishedAdsAreVerifiedFirst:
 
         assert stats.checked == 3
         assert len(transport.urls) == 3
+
+
+class TestSoldAdsAreDetectedNotJustDeletedOnes:
+    """A sold listing stays at its URL and answers 200. Only a *deleted* one
+    404s, and sellers rarely delete.
+
+    Measured against live data: an ad plainly marked "Såld" returned 200 to a
+    HEAD and was therefore treated as still for sale, so it sat on the
+    published board indefinitely. The status is in the page body.
+    """
+
+    # Quoted from the live page: the state arrives as escaped JSON in a script
+    # tag, so the flag really does look like this.
+    SOLD_BODY = r'...on\":\"\"}],\"disposed\":true,\"disposedText\":\"Såld\",\"adVi...'
+    LIVE_BODY = r'...on\":\"\"}],\"disposed\":false,\"adViewTypeLabel\":\"...'
+
+    async def test_a_sold_ad_is_marked_sold(self, session_factory, sleeps):
+        await seed_active(session_factory, 1)
+
+        def handler(request):
+            return httpx.Response(200, text=self.SOLD_BODY)
+
+        client, _ = client_for(handler)
+        async with client:
+            stats = await check_liveness(session_factory, client=client, sleep=sleeps)
+
+        assert stats.marked_sold == 1
+        assert stats.inconclusive == 0
+
+    async def test_a_live_ad_is_left_alone(self, session_factory, sleeps):
+        await seed_active(session_factory, 1)
+
+        def handler(request):
+            return httpx.Response(200, text=self.LIVE_BODY)
+
+        client, _ = client_for(handler)
+        async with client:
+            stats = await check_liveness(session_factory, client=client, sleep=sleeps)
+
+        assert stats.marked_sold == 0
+        assert stats.inconclusive == 0
+
+    async def test_an_unrecognisable_page_is_inconclusive_never_sold(
+        self, session_factory, sleeps
+    ):
+        """If Blocket restyles the page the marker disappears. Guessing "still
+        live" fossilises the board; guessing "sold" deletes real listings. It
+        must be neither, and it must be counted."""
+        await seed_active(session_factory, 3)
+
+        def handler(request):
+            return httpx.Response(200, text="<html>totally redesigned</html>")
+
+        client, _ = client_for(handler)
+        async with client:
+            stats = await check_liveness(session_factory, client=client, sleep=sleeps)
+
+        assert stats.marked_sold == 0
+        assert stats.inconclusive == 3
+        assert "3 status unreadable" in stats.summary()
+
+    async def test_a_deleted_ad_is_still_caught(self, session_factory, sleeps):
+        """The old 404 path must keep working — this replaces nothing."""
+        await seed_active(session_factory, 1)
+
+        def handler(request):
+            return httpx.Response(404)
+
+        client, _ = client_for(handler)
+        async with client:
+            stats = await check_liveness(session_factory, client=client, sleep=sleeps)
+
+        assert stats.marked_sold == 1

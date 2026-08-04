@@ -26,6 +26,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import random
+import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Collection, Awaitable, Callable
@@ -64,6 +65,11 @@ class JanitorStats:
     marked_sold: int = 0
     purged: int = 0
     descriptions_dropped: int = 0
+    # Ads reached, but whose status could not be read. Counted separately from
+    # `checked`: a page we no longer recognise is not evidence that an ad is
+    # live, and treating it as such is how a board fossilises while every run
+    # reports success.
+    inconclusive: int = 0
     halted_early: bool = False
 
     def summary(self) -> str:
@@ -71,19 +77,35 @@ class JanitorStats:
             f"{self.checked} ads checked -> {self.marked_sold} sold, "
             f"{self.purged} purged, {self.descriptions_dropped} descriptions dropped"
         )
+        if self.inconclusive:
+            text += f", {self.inconclusive} status unreadable"
         if self.halted_early:
             text += " [HALTED EARLY]"
         return text
 
 
-async def _is_gone(client: httpx.AsyncClient, url: str) -> bool | None:
-    """Whether a listing has been taken down.
+# Blocket embeds its page state as escaped JSON inside a <script> tag, so the
+# flag arrives as \"disposed\":true. Both forms are accepted in case the
+# escaping ever changes.
+_DISPOSED = re.compile(r'\\?"disposed\\?"\s*:\s*(true|false)')
 
-    Returns `None` for "could not tell" — a timeout or connection error says
-    something about the network, not about the ad. Treating that as SOLD would
+
+async def _is_gone(client: httpx.AsyncClient, url: str) -> bool | None:
+    """Whether a listing is no longer for sale.
+
+    A **GET**, not a HEAD, and that is the whole point. A sold listing stays at
+    its URL and answers 200 — only a *deleted* one 404s, and sellers rarely
+    delete. Checked against live data: an ad plainly marked "Såld" returned 200
+    to a HEAD and was therefore treated as still for sale, so it would have sat
+    on the published board indefinitely. Its status is in the page body, and
+    the same `disposed` flag `sources/blocket.py` already reads at ingest says
+    so exactly.
+
+    Returns `None` for "could not tell" — a timeout, a server error, or a page
+    whose shape we no longer recognise. Treating any of those as SOLD would
     silently delete live listings whenever the connection wobbled.
     """
-    response = await client.head(
+    response = await client.get(
         url,
         headers={"User-Agent": USER_AGENT},
         timeout=REQUEST_TIMEOUT_S,
@@ -96,7 +118,15 @@ async def _is_gone(client: httpx.AsyncClient, url: str) -> bool | None:
         return True
     if response.status_code >= 500:
         return None
-    return False
+
+    match = _DISPOSED.search(response.text)
+    if match is None:
+        # Loud on purpose. If Blocket restyles this page the marker disappears,
+        # every ad becomes inconclusive, nothing is ever retired, and the board
+        # quietly fossilises while every run still reports success. That is the
+        # exact failure this project keeps meeting, so it must not be silent.
+        return None
+    return match.group(1) == "true"
 
 
 async def check_liveness(
@@ -189,11 +219,20 @@ async def check_liveness(
 
             stats.checked += 1
             checked_ids.append(ad_id)
-            if gone:
+            if gone is None:
+                stats.inconclusive += 1
+            elif gone:
                 sold_ids.append(ad_id)
     finally:
         if owned_client:
             await client.aclose()
+
+    if stats.inconclusive and stats.inconclusive > stats.checked // 2:
+        logger.error(
+            "Could not read a status for %d of %d ads. If Blocket changed the "
+            "page, nothing will ever be retired again — check `_DISPOSED`.",
+            stats.inconclusive, stats.checked,
+        )
 
     now = datetime.now(timezone.utc)
     async with session_factory() as session:
