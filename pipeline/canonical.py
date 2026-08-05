@@ -185,7 +185,18 @@ _MACHINE_FAMILIES = (
     "elitebook", "probook", "elitedesk", "prodesk",
     "latitude", "inspiron", "optiplex", "precision 5", "precision 7",
     "pavilion", "zenbook", "vivobook", "chromebook", "zbook",
-    "surface pro", "surface laptop",
+    "surface pro", "surface laptop", "matebook", "galaxy book",
+    # Handhelds and consoles. They advertise "1TB SSD" in the title exactly as
+    # a bare drive does, and their whole price then became the drive's: a GPD
+    # Win at 12 500 kr set the price of a 2 TB NVMe, and three ROG Ally X
+    # listings between 5 500 and 8 500 kr set the price of a 1 TB SSD.
+    #
+    # "rog ally" is spelled in full on purpose. Bare "rog" is a graphics-card
+    # and motherboard brand, and matching it would discard genuine component
+    # listings — the same trap as "nitro" and "omen". The handheld is only
+    # identifiable by the second word.
+    "rog ally", "steam deck", "gpd win", "ayaneo", "onexplayer", "msi claw",
+    "playstation", "ps5", "ps4", "xbox", "nintendo switch",
 )
 
 # Phrases that mark a listing as a part *for* a laptop rather than a laptop.
@@ -232,8 +243,29 @@ def names_a_whole_machine(title: str | None) -> bool:
 
 
 def _medium(raw: str) -> str:
-    """M.2 and NVMe name the same kind of drive; SATA SSD and HDD do not."""
-    return "nvme" if raw.lower().replace(".", "") == "m2" else raw.lower()
+    """Solid state is one product class; spinning rust is another.
+
+    NVMe, M.2 and plain "SSD" all collapse together. They were split before,
+    and the split turned on *word order* rather than on hardware — the same
+    drive canonicalised two ways depending which term the regex reached first:
+
+        "Samsung 990 PRO M.2 NVMe SSD 2TB"  ->  2tb ssd
+        "Kingston NV3 NVMe 2TB"             ->  2tb nvme
+
+    Both are NVMe M.2 drives. That is the exact fragmentation this module
+    exists to prevent, happening inside its own rules, and it left "2tb nvme"
+    holding n=2 and a median of 12 500 kr while "2tb ssd" sat separately.
+
+    Merging is also right about the market: SATA drives are barely traded here
+    any more, so "1TB SSD" in an ad almost always means an NVMe one, and
+    pricing them apart splits a thin index over a distinction buyers are not
+    making. Measured after merging: 1 TB -> n=14 at 1 499 kr, 2 TB -> n=10 at
+    2 500 kr, both clearing MIN_CONFIDENT_SAMPLES where neither did before.
+
+    HDDs stay separate. They trade at a fraction of the price, and that gap is
+    real rather than an artefact.
+    """
+    return "hdd" if raw.lower().replace(".", "") == "hdd" else "ssd"
 
 
 def _squash(text: str) -> str:

@@ -97,9 +97,29 @@ def test_four_digit_reading_still_wins_where_one_exists():
 
 
 def test_storage_collapses_to_capacity_and_medium():
-    assert canonicalize("Samsung 980 Pro 1TB NVMe") == "1tb nvme"
+    assert canonicalize("Samsung 980 Pro 1TB NVMe") == "1tb ssd"
     assert canonicalize("SSD 500GB Kingston") == "500gb ssd"
     assert canonicalize("1TB M.2") == canonicalize("1TB NVMe")
+
+
+def test_solid_state_is_one_class_however_the_ad_words_it():
+    """These two are the same drive. They used to canonicalise apart purely by
+    word order — whichever of "SSD" or "NVMe" the regex reached first — which
+    is the fragmentation this module exists to prevent, inside its own rules.
+    It left "2tb nvme" holding n=2 at a median of 12 500 kr."""
+    assert canonicalize("Samsung 990 PRO M.2 NVMe SSD 2TB") == "2tb ssd"
+    assert canonicalize("Kingston NV3 NVMe 2TB") == "2tb ssd"
+    assert canonicalize("Samsung 990 PRO M.2 NVMe SSD 2TB") == canonicalize(
+        "Kingston NV3 NVMe 2TB"
+    )
+
+
+def test_spinning_disks_stay_separate():
+    """Merging solid state is right because SATA is barely traded and buyers
+    do not price NVMe against SATA. An HDD is a different product at a
+    fraction of the price, and that gap is real."""
+    assert canonicalize("Seagate Barracuda 2TB HDD") == "2tb hdd"
+    assert canonicalize("2TB HDD") != canonicalize("2TB SSD")
 
 
 def test_psu_collapses_to_wattage():
@@ -263,3 +283,39 @@ class TestWholeComputersAreNotPriceObservations:
     def test_an_empty_title_is_not_a_machine(self):
         assert not names_a_whole_machine(None)
         assert not names_a_whole_machine("")
+
+
+class TestHandheldsAndConsolesAreNotDrives:
+    """They advertise "1TB SSD" in the title exactly as a bare drive does, and
+    the whole device's price then became the drive's.
+
+    Live: a GPD Win at 12 500 kr set the price of a 2 TB NVMe, and three ROG
+    Ally X listings between 5 500 and 8 500 kr set the price of a 1 TB SSD.
+    """
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "GPD WIN mini 2025 portable gaming handheld",
+            "ASUS ROG Ally X 1TB – Helt ny & oöppnad",
+            "ROG Ally Z1E  1tb ssd.",
+            "Playstation 5   1tb extra disc",
+            "Huawei MateBook X Pro – i7, 16GB RAM, 1TB SSD, Touch",
+        ],
+    )
+    def test_they_are_excluded_from_the_index(self, title):
+        assert names_a_whole_machine(title)
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "ASUS ROG Strix RTX 3080 10GB",
+            "ROG STRIX B550-F Gaming moderkort",
+            "Samsung 990 PRO M.2 NVMe SSD 2TB",
+        ],
+    )
+    def test_rog_alone_is_still_a_component_brand(self, title):
+        """"rog ally" is spelled in full deliberately. Bare "rog" names
+        graphics cards and motherboards, and matching it would throw away real
+        component listings — the same trap as "nitro" and "omen"."""
+        assert not names_a_whole_machine(title)
