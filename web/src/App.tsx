@@ -535,10 +535,27 @@ function DealCard({ deal, fit }: { deal: Deal; fit: ProfileFit | null }) {
 
       {fit && <FitPanel fit={fit} />}
 
+      {/*
+        Every component, never a slice. This showed the first four of up to
+        nine while the parts total beside it was summed over all of them, so
+        the card could not be checked by eye — and it was hiding real errors:
+        one listing's total was mostly a 5 500 kr "1tb ssd" plus a duplicate of
+        that same drive, neither of them on screen. For a site whose whole
+        claim is "here is the arithmetic", an unverifiable parts list is the
+        wrong default.
+
+        Unpriced parts are dimmed rather than dropped: "no market data for this
+        one" is itself the explanation for a total that looks low.
+      */}
       {math.components.length > 0 && (
         <div className="mb-4 space-y-1">
-          {math.components.slice(0, 4).map((c, i) => (
-            <div key={i} className="flex items-center justify-between text-sm font-mono">
+          {math.components.map((c, i) => (
+            <div
+              key={i}
+              className={`flex items-center justify-between text-sm font-mono ${
+                c.medianSek === null ? 'opacity-50' : ''
+              }`}
+            >
               <span className="flex items-center gap-1.5 text-zinc-300 truncate">
                 {c.type === 'GPU' ? (
                   <Monitor className="w-3 h-3 text-zinc-500 shrink-0" />
@@ -549,11 +566,26 @@ function DealCard({ deal, fit }: { deal: Deal; fit: ProfileFit | null }) {
               </span>
               <span className="text-zinc-500 shrink-0 ml-2">
                 {c.medianSek === null ? (
-                  '—'
+                  <span title="No market data for this part — it adds nothing to the total">
+                    no data
+                  </span>
                 ) : (
                   <>
                     {c.medianSek.toLocaleString('sv-SE')} kr
-                    <span className="text-zinc-700 ml-1">n={c.sampleCount}</span>
+                    <span
+                      className={
+                        c.sampleCount < 5
+                          ? 'text-amber-600/80 ml-1'
+                          : 'text-zinc-700 ml-1'
+                      }
+                      title={
+                        c.sampleCount < 5
+                          ? `Only ${c.sampleCount} observation(s) — provisional`
+                          : `${c.sampleCount} observations`
+                      }
+                    >
+                      n={c.sampleCount}
+                    </span>
                   </>
                 )}
               </span>
