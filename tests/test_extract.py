@@ -12,7 +12,12 @@ from __future__ import annotations
 import pytest
 
 from db.models import ComponentTypeEnum, ItemTypeEnum
-from pipeline.extract import extract, find_components, find_risk_signals
+from pipeline.extract import (
+    extract,
+    find_components,
+    find_damage_markers,
+    find_risk_signals,
+)
 
 
 def kinds(extraction) -> set[ComponentTypeEnum]:
@@ -364,4 +369,62 @@ class TestTradeIntentIsNotAPartsList:
         )
 
         assert extraction.trade_signals == (), f"false positive on: {phrase}"
+        assert extraction.is_confident
+
+
+class TestCosmeticDamageIsARiskNotADefect:
+    """A shattered side panel costs real money and stops nothing working.
+
+    From a live listing that reached the board as an unqualified bargain:
+    "Glaset sprängdes precis innan jag skulle lägga upp annonsen så behövs ett
+    nytt glas" — a Phanteks P400A tempered-glass panel, several hundred kronor
+    and awkward to source. "spricka" and "sprucken" were already signals;
+    "sprängdes" was not, and no damage marker applied because the machine runs.
+    """
+
+    _BODY = (
+        "Säljer nu min mycket välvårdade och stabila gamingdator.\n\n"
+        "Glaset sprängdes precis innan jag skulle lägga upp annonsen så "
+        "behövs ett nytt glas\n\n"
+        "Grafikkort: Palit GeForce RTX 3060 Dual (12GB GDDR6)\n"
+        "Processor: AMD Ryzen 5 5600X\n"
+    )
+    _TITLE = "Gamingdator | RTX 3060 12GB • Ryzen 5 5600X • 16GB RAM"
+
+    def test_the_shattered_glass_sends_the_ad_to_a_model(self):
+        extraction = extract(self._TITLE, self._BODY)
+
+        assert "sprängdes" in extraction.risk_signals
+        assert not extraction.is_confident, (
+            "a cost the buyer will have to pay deserves a human-grade read"
+        )
+
+    def test_it_is_not_treated_as_a_broken_machine(self):
+        """The distinction the two lists exist to keep. A cracked panel must
+        not disqualify a working PC from being the parts-comparison baseline
+        the way "defekt" does — that would throw away a valid baseline over a
+        piece of glass."""
+        assert find_damage_markers(self._TITLE, self._BODY) == ()
+
+    @pytest.mark.parametrize(
+        "phrase",
+        [
+            "Sidopanelen är krossad.",
+            "Behövs ett nytt glas.",
+            "Chassit har några repor.",
+            "Glaset är spräckt men allt fungerar.",
+        ],
+    )
+    def test_other_cosmetic_wording_is_caught(self, phrase):
+        extraction = extract("Gaming PC RTX 3060 / Ryzen 5 5600", f"Fin dator. {phrase}")
+
+        assert extraction.risk_signals, f"missed cosmetic damage in: {phrase}"
+        assert find_damage_markers(phrase) == (), "still not a broken machine"
+
+    def test_an_undamaged_listing_is_unaffected(self):
+        extraction = extract(
+            "ASUS Dual RTX 3060 Ti OC V2 (8GB)", "Nyskick, kvitto finns."
+        )
+
+        assert extraction.risk_signals == ()
         assert extraction.is_confident

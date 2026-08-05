@@ -101,6 +101,23 @@ RISK_SIGNALS = (
     "osäker", "vet ej", "vet inte",
     "as-is", "untested", "faulty", "broken", "for parts",
     "startar inte", "startar ej", "stendöd", "obs läs beskrivning",
+    # Cosmetic damage. It costs real money without stopping the machine
+    # working, which is exactly why these belong here and *not* in
+    # `DAMAGE_MARKERS`: a shattered side panel must send the ad to a model, but
+    # it must not disqualify the listing from being a valid parts-comparison
+    # baseline the way "defekt" does. The two lists answer different questions.
+    #
+    # From a live listing: "Glaset sprängdes precis innan jag skulle lägga upp
+    # annonsen så behövs ett nytt glas" — a shattered tempered-glass panel on a
+    # Phanteks P400A, several hundred kronor to replace and awkward to source,
+    # inside an ad that otherwise reads as a clean, well-specified build.
+    # Nothing caught it: "spricka" and "sprucken" were already here, but
+    # "sprängdes" was not, and the machine works, so no damage marker applied
+    # either. It reached the board as an unqualified bargain.
+    "sprängdes", "sprängde", "sprängt", "spräckt", "spräcktes",
+    "krossad", "krossat", "krossade",
+    "nytt glas", "trasigt glas", "sprucket glas", "saknar glas",
+    "repor", "repad", "bucklor", "bucklig",
 )
 
 # Phrases meaning a part named nearby is what the seller **wants**, not what
