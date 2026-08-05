@@ -242,6 +242,42 @@ def names_a_whole_machine(title: str | None) -> bool:
     return False
 
 
+# Things that are not PC components at all, or not the component they appear
+# to be. Separate from `_MACHINE_FAMILIES`, which answers "is this a whole
+# computer" — a monitor is not a computer either, but it is not one of these.
+_NOT_A_PART = (
+    # Displays. A monitor listing describes the GPU the seller drives it with,
+    # so the extractor finds a graphics card in an ad selling no graphics card.
+    "bildskärm", "skärm", "monitor", "qled", "oled-skärm", "ultrawide",
+    "odyssey", "curved",
+    # External storage. A USB drive is a different product from the internal
+    # NVMe it gets priced against, and pooling them corrupts both medians.
+    "extern hårddisk", "externt", "portable ssd", "usb-c ssd", "usb 3",
+)
+
+
+def names_a_non_component(title: str | None) -> bool:
+    """Whether a listing is not the PC part the extractor took it for.
+
+    Two live cases, both of which reached the published board as the best deal
+    in their category:
+
+    A "Samsung Odyssey G9, 49" QLED 240 Hz" was published as a **graphics
+    card** 7 000 kr under market. Its description says "Jag använder ett RTX
+    5080 med 16gb VRAM" — the seller's own card, mentioned to explain what it
+    takes to drive the panel. Same shape as the trade-intent bug: hardware
+    named in an ad that is not what is for sale.
+
+    A "Samsung T7 Portable SSD 1TB extern hårddisk" was priced against internal
+    NVMe drives. A bus-powered USB disk is a different product at a different
+    price, and pooling the two corrupts the median in both directions.
+    """
+    if not title:
+        return False
+    lowered = title.lower()
+    return any(word in lowered for word in _NOT_A_PART)
+
+
 def _medium(raw: str) -> str:
     """Solid state is one product class; spinning rust is another.
 

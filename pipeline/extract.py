@@ -58,7 +58,48 @@ _CPU_INTEL = re.compile(r"\b(i[3579])[\s-]*(\d{4,5}[A-Z]{0,2})\b", re.IGNORECASE
 # one CPU into two entries in the market index — halving both sample counts and
 # making each median less trustworthy than the data actually warrants.
 _CPU_AMD = re.compile(r"\bRyzen\s*([3579])\s*(\d{4}[A-Z]{0,3})\b", re.IGNORECASE)
-_RAM = re.compile(r"\b(\d{1,3})\s*GB\s+(DDR[345])\b", re.IGNORECASE)
+# Memory. Generation and capacity are matched separately and paired by
+# `_ram_capacity_near`, because the relationship between them is not positional
+# — see that function for the three shapes sellers use and why the largest
+# capacity in the window is the right one to take.
+_RAM_GEN = re.compile(r"\bDDR([345])\b", re.IGNORECASE)
+_RAM_CAP = re.compile(r"\b(\d{1,3})\s*GB\b", re.IGNORECASE)
+
+# How far either side of "DDR4" a capacity may sit and still belong to it.
+# Wide enough for "16GB (2x8GB DDR4 3200MHz)", narrow enough that a capacity
+# from a different sentence cannot be captured.
+_RAM_WINDOW = 40
+
+
+def _ram_capacity_near(text: str, start: int, end: int) -> str | None:
+    """The memory capacity a `DDR…` mention belongs to, if any.
+
+    Not a regex, because the rule is not positional. Sellers write memory three
+    ways and the old pattern read only the first:
+
+        "16GB DDR4"                  capacity first, adjacent
+        "DDR4 16GB"                  generation first
+        "16GB (2x8GB DDR4 3200MHz)"  kit notation, generation inside the pair
+
+    The kit form is the usual way to advertise a matched pair, so this was not
+    a rare edge — one published build lost its memory entirely and was valued
+    1 100 kr low on an ad that stated it plainly.
+
+    **The largest capacity in the window wins**, and that is the load-bearing
+    choice. In "16GB (2x8GB DDR4)" the *nearest* figure is the per-stick 8 GB
+    and the right answer is the 16 GB total; indexing a kit as half its size
+    would be worse than missing it. The same rule reads "8GB VRAM och 32GB
+    DDR5" correctly, where the nearest-figure rule would have taken the
+    graphics card's memory.
+    """
+    before = text[max(0, start - _RAM_WINDOW) : start]
+    after = text[end : end + _RAM_WINDOW]
+    sizes = [int(m.group(1)) for m in _RAM_CAP.finditer(before)]
+    if not sizes:
+        sizes = [int(m.group(1)) for m in _RAM_CAP.finditer(after)]
+    if not sizes:
+        return None
+    return str(max(sizes))
 
 # Storage. The medium word is mandatory in both orderings, and that is the whole
 # safety mechanism: a bare "500GB" in a PC listing is as likely to be the second
@@ -253,8 +294,10 @@ def find_components(text: str) -> tuple[ComponentVerdict, ...]:
         add(ComponentTypeEnum.CPU, f"{match.group(1)}-{match.group(2)}")
     for match in _CPU_AMD.finditer(text):
         add(ComponentTypeEnum.CPU, f"Ryzen {match.group(1)} {match.group(2)}")
-    for match in _RAM.finditer(text):
-        add(ComponentTypeEnum.RAM, f"{match.group(1)}GB {match.group(2)}")
+    for match in _RAM_GEN.finditer(text):
+        size = _ram_capacity_near(text, match.start(), match.end())
+        if size is not None:
+            add(ComponentTypeEnum.RAM, f"{size}GB DDR{match.group(1)}")
     for match in _STORAGE.finditer(text):
         # One alternation, two orderings — whichever branch fired supplies the
         # groups; the other three are None.

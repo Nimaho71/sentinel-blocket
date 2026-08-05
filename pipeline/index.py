@@ -56,6 +56,7 @@ from db.models import (
 
 from pipeline.canonical import (  # noqa: F401  (canonicalize re-exported)
     canonicalize,
+    names_a_non_component,
     names_a_whole_machine,
 )
 
@@ -275,10 +276,15 @@ async def record_observations(session: AsyncSession, *, only_ad_id: int | None =
     # classification, because the classifier is right that these ads name one
     # recognisable part — the error is treating a MacBook's asking price as
     # what its SSD costs. See `names_a_whole_machine` for the live damage.
-    kept = [row for row in rows if not names_a_whole_machine(row.title)]
+    kept = [
+        row
+        for row in rows
+        if not names_a_whole_machine(row.title)
+        and not names_a_non_component(row.title)
+    ]
     if len(kept) != len(rows):
         logger.info(
-            "Index: skipped %d observations from whole-computer listings.",
+            "Index: skipped %d observations from whole computers and non-parts.",
             len(rows) - len(kept),
         )
     rows = kept

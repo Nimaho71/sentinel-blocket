@@ -11,6 +11,7 @@ import pytest
 from pipeline.canonical import (
     canonicalize,
     is_laptop_listing,
+    names_a_non_component,
     names_a_whole_machine,
 )
 
@@ -319,3 +320,32 @@ class TestHandheldsAndConsolesAreNotDrives:
         graphics cards and motherboards, and matching it would throw away real
         component listings — the same trap as "nitro" and "omen"."""
         assert not names_a_whole_machine(title)
+
+
+class TestThingsThatAreNotThePartTheyLookLike:
+    """Both of these reached the published board as the best deal in their
+    category."""
+
+    def test_a_monitor_is_not_a_graphics_card(self):
+        """"Samsung Odyssey G9, 49" QLED 240 Hz" was published as a GPU 7 000 kr
+        under market. Its description says "Jag använder ett RTX 5080 med 16gb
+        VRAM" — the seller's own card, named to explain what drives the panel.
+        Same shape as the trade-intent bug."""
+        assert names_a_non_component('Samsung Odyssey G9, 49" QLED 240 Hz')
+
+    def test_an_external_drive_is_not_an_internal_one(self):
+        """A bus-powered USB disk is a different product at a different price,
+        and pooling it with internal NVMe corrupts the median both ways."""
+        assert names_a_non_component("Samsung T7 Portable SSD 1TB extern hårddisk")
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "ASUS Dual RTX 3060 Ti OC V2 (8GB)",
+            "Kingston NV3 NVMe 2TB",
+            "Samsung 990 PRO M.2 NVMe SSD 2TB",
+            "Corsair Vengeance RGB Pro 16GB DDR4",
+        ],
+    )
+    def test_real_components_are_untouched(self, title):
+        assert not names_a_non_component(title)

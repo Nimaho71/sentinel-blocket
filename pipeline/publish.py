@@ -86,6 +86,7 @@ from sqlalchemy.orm import selectinload
 from ai.scrub import scrub
 from db.models import Ad, AiEvaluation, ComponentTypeEnum, ItemTypeEnum, StatusEnum
 from pipeline.basket import build_or_buy
+from pipeline.canonical import names_a_non_component
 from pipeline.extract import find_damage_markers
 from pipeline.index import price_index, value_ad
 from pipeline.redact import (
@@ -326,6 +327,29 @@ async def build_snapshot(
         .options(selectinload(Ad.ai_evaluation), selectinload(Ad.extracted_components))
     )
     ads = list((await session.execute(stmt)).scalars().all())
+
+    # Filtering the index alone was not enough. A monitor stops *polluting* the
+    # graphics-card median once its observation is dropped, but it was still
+    # published as a graphics card — the board is built from an ad's extracted
+    # components, which is a separate path. "Samsung Odyssey G9, 49\" QLED
+    # 240 Hz" was the top GPU deal at 7 000 kr under market, because its
+    # description mentions the RTX 5080 the seller drives it with.
+    before = len(ads)
+    # Only applied to listings claiming to *be* a part. A complete PC sold
+    # with a monitor is still a complete PC — an earlier version of this
+    # dropped 293 listings, most of them builds whose titles merely said
+    # "skärm", which is a far worse error than the one being fixed.
+    ads = [
+        ad
+        for ad in ads
+        if ad.item_type is ItemTypeEnum.FULL_BUILD
+        or not names_a_non_component(ad.title)
+    ]
+    if len(ads) != before:
+        logger.info(
+            "Publish: excluded %d listings that are not the part they parse as.",
+            before - len(ads),
+        )
 
     upgrade_prices = {p.id: await _upgrade_prices(session, p) for p in PROFILES}
 

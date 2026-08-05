@@ -428,3 +428,56 @@ class TestCosmeticDamageIsARiskNotADefect:
 
         assert extraction.risk_signals == ()
         assert extraction.is_confident
+
+
+class TestMemoryIsReadHoweverTheAdWritesIt:
+    """The old pattern required capacity and generation adjacent, in that
+    order, so it read "16GB DDR4" and nothing else.
+
+    A published build lost its memory entirely and was valued 1 100 kr low on
+    an ad stating it plainly: "Corsair Vengeance RGB Pro Black 16GB (2x8GB
+    DDR4 3200MHz)".
+    """
+
+    @pytest.mark.parametrize(
+        "text, expected",
+        [
+            ("16GB DDR4", "16GB DDR4"),
+            ("DDR4 16GB", "16GB DDR4"),
+            ("DDR5-6000 32GB", "32GB DDR5"),
+            ("Corsair Vengeance RGB Pro Black 16GB (2x8GB DDR4 3200MHz)", "16GB DDR4"),
+            ("32GB (2x16GB) DDR5 6000MHz", "32GB DDR5"),
+            ("Kingston 8GB DDR3", "8GB DDR3"),
+        ],
+    )
+    def test_every_shape_yields_the_total_capacity(self, text, expected):
+        ram = [
+            c for c in find_components(text)
+            if c.component_type is ComponentTypeEnum.RAM
+        ]
+        assert [c.component_name for c in ram] == [expected]
+
+    def test_a_kit_is_its_total_not_one_stick(self):
+        """The load-bearing choice. In "16GB (2x8GB)" the *nearest* figure is
+        the per-stick 8 GB and the right answer is the 16 GB total — indexing a
+        kit as half its size would be worse than missing it."""
+        ram = [
+            c for c in find_components("16GB (2x8GB DDR4)")
+            if c.component_type is ComponentTypeEnum.RAM
+        ]
+        assert ram[0].component_name == "16GB DDR4"
+
+    def test_graphics_memory_is_not_mistaken_for_system_memory(self):
+        """"12GB VRAM" sits close to the DDR mention in a great many build
+        ads. A nearest-figure rule would have taken it."""
+        comps = find_components("RTX 3060 med 12GB VRAM och 32GB DDR5")
+        ram = [c for c in comps if c.component_type is ComponentTypeEnum.RAM]
+
+        assert [c.component_name for c in ram] == ["32GB DDR5"]
+
+    def test_a_lone_generation_with_no_capacity_is_not_invented(self):
+        ram = [
+            c for c in find_components("Säljer DDR4-minnen, hör av dig")
+            if c.component_type is ComponentTypeEnum.RAM
+        ]
+        assert ram == []
