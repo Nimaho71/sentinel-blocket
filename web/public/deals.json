@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T02:19:22.392765+00:00",
+  "generatedAt": "2026-11-18T02:23:08.774713+00:00",
   "source": "blocket",
   "perCategoryLimit": 10,
   "deals": [
@@ -122,15 +122,15 @@
       "listedAt": "2026-07-28T19:40:02",
       "condition": "Bra skick - varsamt använd",
       "math": {
-        "estimatedPartsSek": 13599,
-        "deltaSek": -7104,
+        "estimatedPartsSek": 14099,
+        "deltaSek": -7604,
         "minSampleCount": 2,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 3060",
-            "medianSek": 3000,
-            "sampleCount": 33
+            "medianSek": 3500,
+            "sampleCount": 38
           },
           {
             "type": "CPU",
@@ -230,15 +230,15 @@
       "listedAt": "2026-10-21T18:28:09",
       "condition": "Bra skick - varsamt använd",
       "math": {
-        "estimatedPartsSek": 12845,
-        "deltaSek": -1850,
+        "estimatedPartsSek": 13345,
+        "deltaSek": -2350,
         "minSampleCount": 1,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 3060",
-            "medianSek": 3000,
-            "sampleCount": 33
+            "medianSek": 3500,
+            "sampleCount": 38
           },
           {
             "type": "CPU",
@@ -353,13 +353,13 @@
             "type": "GPU",
             "name": "rtx 3090",
             "medianSek": 15000,
-            "sampleCount": 30
+            "sampleCount": 31
           },
           {
             "type": "RAM",
             "name": "32gb ddr5",
             "medianSek": 5329,
-            "sampleCount": 115
+            "sampleCount": 117
           },
           {
             "type": "STORAGE",
@@ -445,42 +445,48 @@
       }
     },
     {
-      "id": "13107",
-      "title": "Gaming dator",
-      "priceSek": 13000,
-      "url": "https://www.blocket.se/recommerce/forsale/item/28246736",
+      "id": "5787",
+      "title": "Gaming dator – RTX 5070 12GB / Intel i9 / 32GB RAM / 1TB NVMe",
+      "priceSek": 12495,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25569470",
       "category": "FULL_BUILD",
-      "city": "Gislaved",
-      "listedAt": "2026-11-14T16:05:12",
-      "condition": "Mycket bra skick - som ny",
+      "city": "Kalmar",
+      "listedAt": "2026-08-09T21:27:01",
+      "condition": "Bra skick - varsamt använd",
       "math": {
-        "estimatedPartsSek": 16824,
-        "deltaSek": -3824,
-        "minSampleCount": 3,
+        "estimatedPartsSek": 12644,
+        "deltaSek": -149,
+        "minSampleCount": 25,
         "components": [
           {
             "type": "GPU",
-            "name": "rtx 4070",
-            "medianSek": 6700,
-            "sampleCount": 12
+            "name": "rtx 5070",
+            "medianSek": 8495,
+            "sampleCount": 32
           },
           {
             "type": "CPU",
-            "name": "i5-13600k",
-            "medianSek": 2000,
-            "sampleCount": 3
+            "name": "i9-10850k",
+            "medianSek": null,
+            "sampleCount": 0
           },
           {
             "type": "RAM",
-            "name": "32gb ddr5",
-            "medianSek": 5329,
-            "sampleCount": 115
+            "name": "32gb ddr4",
+            "medianSek": 1950,
+            "sampleCount": 166
           },
           {
             "type": "STORAGE",
-            "name": "2tb ssd",
-            "medianSek": 2795,
-            "sampleCount": 34
+            "name": "1tb ssd",
+            "medianSek": 1599,
+            "sampleCount": 71
+          },
+          {
+            "type": "PSU",
+            "name": "750w psu",
+            "medianSek": 600,
+            "sampleCount": 25
           }
         ]
       },
@@ -502,10 +508,10 @@
           "unknown": [],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 13000,
+          "effectivePriceSek": 12495,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 1083.3333333333333,
+          "metricValue": 1041.25,
           "vramCaveat": null
         },
         "gaming": {
@@ -519,7 +525,7 @@
           "unknown": [],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 13000,
+          "effectivePriceSek": 12495,
           "metric": null,
           "metricUnit": null,
           "metricValue": null,
@@ -539,10 +545,10 @@
             "GPU under 100 W"
           ],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 13000,
+          "effectivePriceSek": 12495,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
-          "metricValue": 6500.0,
+          "metricValue": 12495.0,
           "vramCaveat": null
         }
       }
@@ -557,15 +563,15 @@
       "listedAt": "2026-06-27T14:33:23",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 16450,
-        "deltaSek": -3450,
+        "estimatedPartsSek": 16895,
+        "deltaSek": -3895,
         "minSampleCount": 1,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 5070",
-            "medianSek": 8000,
-            "sampleCount": 31
+            "medianSek": 8495,
+            "sampleCount": 32
           },
           {
             "type": "CPU",
@@ -576,8 +582,8 @@
           {
             "type": "RAM",
             "name": "32gb ddr4",
-            "medianSek": 2000,
-            "sampleCount": 162
+            "medianSek": 1950,
+            "sampleCount": 166
           },
           {
             "type": "STORAGE",
@@ -663,6 +669,127 @@
       }
     },
     {
+      "id": "3577",
+      "title": "Speldator med RTX 5070 Ti / 7800X3D / 32GB DDR5 / 2TB M.2 SSD",
+      "priceSek": 18500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25395351",
+      "category": "FULL_BUILD",
+      "city": "Arvidsjaur",
+      "listedAt": "2026-08-04T13:39:57",
+      "condition": "Nytt skick - helt ny",
+      "math": {
+        "estimatedPartsSek": 23028,
+        "deltaSek": -4528,
+        "minSampleCount": 1,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "rtx 5070 ti",
+            "medianSek": 12900,
+            "sampleCount": 32
+          },
+          {
+            "type": "CPU",
+            "name": "ryzen 7 7800x3d",
+            "medianSek": 2999,
+            "sampleCount": 7
+          },
+          {
+            "type": "RAM",
+            "name": "32gb ddr5",
+            "medianSek": 5329,
+            "sampleCount": 117
+          },
+          {
+            "type": "STORAGE",
+            "name": "2 tb kingston kc3000 nvme m.2 ssd",
+            "medianSek": null,
+            "sampleCount": 0
+          },
+          {
+            "type": "MOTHERBOARD",
+            "name": "asus tuf gaming b650-plus wifi",
+            "medianSek": 1200,
+            "sampleCount": 1
+          },
+          {
+            "type": "PSU",
+            "name": "750w psu",
+            "medianSek": 600,
+            "sampleCount": 25
+          },
+          {
+            "type": "OTHER",
+            "name": "thermalright peerless assassin black",
+            "medianSek": null,
+            "sampleCount": 0
+          }
+        ]
+      },
+      "ai": {
+        "summary": "A well-documented, newly built gaming PC. The seller offers the opportunity to test the machine on-site, which is a positive sign.",
+        "flags": [],
+        "confidence": 0.9
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "fits",
+          "met": [
+            "Nvidia GPU",
+            "12 GB VRAM",
+            "32 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 18500,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 1156.25,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "fits",
+          "met": [
+            "8 GB VRAM",
+            "16 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 18500,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "GPU under 100 W"
+          ],
+          "unknown": [
+            "1 TB storage"
+          ],
+          "blockedBy": [
+            "GPU under 100 W"
+          ],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 18500,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
       "id": "336",
       "title": "RTX 4090 Gaming-PC – Ryzen 9 7950X, 64GB DDR5, 2TB SSD",
       "priceSek": 37000,
@@ -672,8 +799,8 @@
       "listedAt": "2026-07-25T08:50:32",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 42200,
-        "deltaSek": -5200,
+        "estimatedPartsSek": 43200,
+        "deltaSek": -6200,
         "minSampleCount": 1,
         "components": [
           {
@@ -715,8 +842,8 @@
           {
             "type": "GPU",
             "name": "rtx 4090",
-            "medianSek": 27000,
-            "sampleCount": 21
+            "medianSek": 28000,
+            "sampleCount": 22
           }
         ]
       },
@@ -793,8 +920,8 @@
       "listedAt": "2026-07-12T04:43:19",
       "condition": "Nytt skick - helt ny",
       "math": {
-        "estimatedPartsSek": 31312,
-        "deltaSek": -6312,
+        "estimatedPartsSek": 31272,
+        "deltaSek": -6272,
         "minSampleCount": 7,
         "components": [
           {
@@ -813,7 +940,7 @@
             "type": "RAM",
             "name": "32gb ddr5",
             "medianSek": 5329,
-            "sampleCount": 115
+            "sampleCount": 117
           },
           {
             "type": "STORAGE",
@@ -830,8 +957,8 @@
           {
             "type": "PSU",
             "name": "850w psu",
-            "medianSek": 890,
-            "sampleCount": 31
+            "medianSek": 850,
+            "sampleCount": 32
           },
           {
             "type": "CASE",
@@ -920,8 +1047,8 @@
       "listedAt": "2026-06-24T20:03:29",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 8149,
-        "deltaSek": 851,
+        "estimatedPartsSek": 8099,
+        "deltaSek": 901,
         "minSampleCount": 1,
         "components": [
           {
@@ -939,8 +1066,8 @@
           {
             "type": "RAM",
             "name": "32gb ddr4",
-            "medianSek": 2000,
-            "sampleCount": 162
+            "medianSek": 1950,
+            "sampleCount": 166
           },
           {
             "type": "STORAGE",
@@ -1029,15 +1156,15 @@
       "listedAt": "2026-09-15T18:29:17",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 7099,
-        "deltaSek": 1901,
+        "estimatedPartsSek": 7549,
+        "deltaSek": 1451,
         "minSampleCount": 3,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 3060",
-            "medianSek": 3000,
-            "sampleCount": 33
+            "medianSek": 3500,
+            "sampleCount": 38
           },
           {
             "type": "CPU",
@@ -1048,8 +1175,8 @@
           {
             "type": "RAM",
             "name": "32gb ddr4",
-            "medianSek": 2000,
-            "sampleCount": 162
+            "medianSek": 1950,
+            "sampleCount": 166
           },
           {
             "type": "STORAGE",
@@ -1321,15 +1448,15 @@
       "listedAt": "2026-06-23T11:07:43",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 3000,
-        "deltaSek": 0,
-        "minSampleCount": 33,
+        "estimatedPartsSek": 3500,
+        "deltaSek": -500,
+        "minSampleCount": 38,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 3060",
-            "medianSek": 3000,
-            "sampleCount": 33
+            "medianSek": 3500,
+            "sampleCount": 38
           }
         ]
       },
@@ -1391,6 +1518,441 @@
           ],
           "upgradeCostSek": 0,
           "effectivePriceSek": 3000,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "11857",
+      "title": "NVIDIA RTX 3060 12GB",
+      "priceSek": 3500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/28088548",
+      "category": "GPU",
+      "city": "Iggesund",
+      "listedAt": "2026-11-08T16:24:02",
+      "condition": "Mycket bra skick - som ny",
+      "math": {
+        "estimatedPartsSek": 3500,
+        "deltaSek": 0,
+        "minSampleCount": 38,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "rtx 3060",
+            "medianSek": 3500,
+            "sampleCount": 38
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 291.6666666666667,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "8 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "GPU under 100 W"
+          ],
+          "unknown": [
+            "1 TB storage"
+          ],
+          "blockedBy": [
+            "GPU under 100 W"
+          ],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "13517",
+      "title": "ASUS Dual RTX 3060 12gb OC BYTES",
+      "priceSek": 3500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/28318603",
+      "category": "GPU",
+      "city": "Sjömarken",
+      "listedAt": "2026-11-16T22:30:09",
+      "condition": "Mycket bra skick - som ny",
+      "math": {
+        "estimatedPartsSek": 3500,
+        "deltaSek": 0,
+        "minSampleCount": 38,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "rtx 3060",
+            "medianSek": 3500,
+            "sampleCount": 38
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 291.6666666666667,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "8 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "GPU under 100 W"
+          ],
+          "unknown": [
+            "1 TB storage"
+          ],
+          "blockedBy": [
+            "GPU under 100 W"
+          ],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "13562",
+      "title": "Gigabyte GeForce RTX 3060 12 gb grafikkort",
+      "priceSek": 3500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/28333695",
+      "category": "GPU",
+      "city": "Bodafors",
+      "listedAt": "2026-11-17T15:42:01",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 3500,
+        "deltaSek": 0,
+        "minSampleCount": 38,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "rtx 3060",
+            "medianSek": 3500,
+            "sampleCount": 38
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 291.6666666666667,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "8 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "GPU under 100 W"
+          ],
+          "unknown": [
+            "1 TB storage"
+          ],
+          "blockedBy": [
+            "GPU under 100 W"
+          ],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "13579",
+      "title": "Gigabyte GeForce RTX 3060 12GB Windforce 2X OC 2.0",
+      "priceSek": 3500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/28331340",
+      "category": "GPU",
+      "city": "Nynäshamn",
+      "listedAt": "2026-11-17T14:20:19",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 3500,
+        "deltaSek": 0,
+        "minSampleCount": 38,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "rtx 3060",
+            "medianSek": 3500,
+            "sampleCount": 38
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 291.6666666666667,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "8 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "GPU under 100 W"
+          ],
+          "unknown": [
+            "1 TB storage"
+          ],
+          "blockedBy": [
+            "GPU under 100 W"
+          ],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "5102",
+      "title": "RTX 3060 12GB-Gainward Ghost OC",
+      "priceSek": 3500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25435740",
+      "category": "GPU",
+      "city": "Helsingborg",
+      "listedAt": "2026-08-05T17:20:59",
+      "condition": "Mycket bra skick - som ny",
+      "math": {
+        "estimatedPartsSek": 3500,
+        "deltaSek": 0,
+        "minSampleCount": 38,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "rtx 3060",
+            "medianSek": 3500,
+            "sampleCount": 38
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 291.6666666666667,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "8 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "GPU under 100 W"
+          ],
+          "unknown": [
+            "1 TB storage"
+          ],
+          "blockedBy": [
+            "GPU under 100 W"
+          ],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3500,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -1585,27 +2147,27 @@
       "listedAt": "2026-10-11T17:09:53",
       "condition": "Funkar inte - kan fixas",
       "math": {
-        "estimatedPartsSek": 6197,
-        "deltaSek": -2697,
+        "estimatedPartsSek": 6698,
+        "deltaSek": -3198,
         "minSampleCount": 1,
         "components": [
           {
             "type": "CPU",
             "name": "ryzen 5 5600g",
-            "medianSek": 999,
-            "sampleCount": 3
+            "medianSek": 1000,
+            "sampleCount": 4
           },
           {
             "type": "GPU",
             "name": "rtx 3060",
-            "medianSek": 3000,
-            "sampleCount": 33
+            "medianSek": 3500,
+            "sampleCount": 38
           },
           {
             "type": "RAM",
             "name": "16gb ddr4",
             "medianSek": 1199,
-            "sampleCount": 290
+            "sampleCount": 296
           },
           {
             "type": "STORAGE",
@@ -1650,11 +2212,11 @@
           ],
           "unknown": [],
           "blockedBy": [],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 5500,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 5450,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 458.3333333333333,
+          "metricValue": 454.1666666666667,
           "vramCaveat": null
         },
         "gaming": {
@@ -1783,93 +2345,6 @@
       }
     },
     {
-      "id": "13106",
-      "title": "ASUS RTX GeForce 4070 DUAL EVO OC 12GB",
-      "priceSek": 6000,
-      "url": "https://www.blocket.se/recommerce/forsale/item/28245623",
-      "category": "GPU",
-      "city": "Falun",
-      "listedAt": "2026-11-14T15:32:26",
-      "condition": "Mycket bra skick - som ny",
-      "math": {
-        "estimatedPartsSek": 6700,
-        "deltaSek": -700,
-        "minSampleCount": 12,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "rtx 4070",
-            "medianSek": 6700,
-            "sampleCount": 12
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [
-            "Nvidia GPU",
-            "12 GB VRAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6000,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 500.0,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [
-            "8 GB VRAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6000,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unfit",
-          "met": [],
-          "unmet": [
-            "GPU under 100 W"
-          ],
-          "unknown": [
-            "1 TB storage"
-          ],
-          "blockedBy": [
-            "GPU under 100 W"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6000,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
       "id": "2931",
       "title": "(SÄLJES/BYTES) GIGABYTE GeForce RTX 5070 EAGLE SFF OC 12GB GDDR7 grafikkort",
       "priceSek": 6275,
@@ -1879,15 +2354,15 @@
       "listedAt": "2026-06-23T23:14:23",
       "condition": "Nytt skick - helt ny",
       "math": {
-        "estimatedPartsSek": 8000,
-        "deltaSek": -1725,
-        "minSampleCount": 31,
+        "estimatedPartsSek": 8495,
+        "deltaSek": -2220,
+        "minSampleCount": 32,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 5070",
-            "medianSek": 8000,
-            "sampleCount": 31
+            "medianSek": 8495,
+            "sampleCount": 32
           }
         ]
       },
@@ -1957,180 +2432,6 @@
       }
     },
     {
-      "id": "11966",
-      "title": "RTX 4070",
-      "priceSek": 6700,
-      "url": "https://www.blocket.se/recommerce/forsale/item/28141748",
-      "category": "GPU",
-      "city": "Göteborg",
-      "listedAt": "2026-11-10T16:48:29",
-      "condition": "Mycket bra skick - som ny",
-      "math": {
-        "estimatedPartsSek": 6700,
-        "deltaSek": 0,
-        "minSampleCount": 12,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "rtx 4070",
-            "medianSek": 6700,
-            "sampleCount": 12
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Straightforward listing for a GPU with original packaging and receipt included.",
-        "flags": [],
-        "confidence": 0.9
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [
-            "Nvidia GPU",
-            "12 GB VRAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6700,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 558.3333333333334,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [
-            "8 GB VRAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6700,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unfit",
-          "met": [],
-          "unmet": [
-            "GPU under 100 W"
-          ],
-          "unknown": [
-            "1 TB storage"
-          ],
-          "blockedBy": [
-            "GPU under 100 W"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6700,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "11968",
-      "title": "Asus Geforce RTX 4070 Super 12GB Dual",
-      "priceSek": 7000,
-      "url": "https://www.blocket.se/recommerce/forsale/item/28137484",
-      "category": "GPU",
-      "city": "Mölndal",
-      "listedAt": "2026-11-10T14:36:55",
-      "condition": "Okej skick - synligt använd",
-      "math": {
-        "estimatedPartsSek": 7500,
-        "deltaSek": -500,
-        "minSampleCount": 5,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "rtx 4070 super",
-            "medianSek": 7500,
-            "sampleCount": 5
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [
-            "Nvidia GPU",
-            "12 GB VRAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 7000,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 583.3333333333334,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [
-            "8 GB VRAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 7000,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unfit",
-          "met": [],
-          "unmet": [
-            "GPU under 100 W"
-          ],
-          "unknown": [
-            "1 TB storage"
-          ],
-          "blockedBy": [
-            "GPU under 100 W"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 7000,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
       "id": "2935",
       "title": "MSI GeForce RTX 5070 Ti VENTUS 3X OC 16GB",
       "priceSek": 9500,
@@ -2140,15 +2441,15 @@
       "listedAt": "2026-06-14T20:35:56",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 12500,
-        "deltaSek": -3000,
-        "minSampleCount": 31,
+        "estimatedPartsSek": 12900,
+        "deltaSek": -3400,
+        "minSampleCount": 32,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 5070 ti",
-            "medianSek": 12500,
-            "sampleCount": 31
+            "medianSek": 12900,
+            "sampleCount": 32
           }
         ]
       },
@@ -2218,6 +2519,93 @@
       }
     },
     {
+      "id": "6757",
+      "title": "🔥 MSI GeForce RTX 5070 Ti 16GB OC - INTRESSE KOLL",
+      "priceSek": 11000,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25639961",
+      "category": "GPU",
+      "city": "Lyckeby",
+      "listedAt": "2026-08-12T09:44:50",
+      "condition": "Mycket bra skick - som ny",
+      "math": {
+        "estimatedPartsSek": 12900,
+        "deltaSek": -1900,
+        "minSampleCount": 32,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "rtx 5070 ti",
+            "medianSek": 12900,
+            "sampleCount": 32
+          }
+        ]
+      },
+      "ai": {
+        "summary": "The card is essentially new with a full warranty and receipt. The seller is transparent about its limited usage for AI projects.",
+        "flags": [],
+        "confidence": 0.9
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 11000,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 687.5,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "8 GB VRAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 11000,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "GPU under 100 W"
+          ],
+          "unknown": [
+            "1 TB storage"
+          ],
+          "blockedBy": [
+            "GPU under 100 W"
+          ],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 11000,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
       "id": "6773",
       "title": "ASUS 4090 TUF OC",
       "priceSek": 25000,
@@ -2227,15 +2615,15 @@
       "listedAt": "2026-08-12T13:40:38",
       "condition": "Bra skick - varsamt använd",
       "math": {
-        "estimatedPartsSek": 27000,
-        "deltaSek": -2000,
-        "minSampleCount": 21,
+        "estimatedPartsSek": 28000,
+        "deltaSek": -3000,
+        "minSampleCount": 22,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 4090",
-            "medianSek": 27000,
-            "sampleCount": 21
+            "medianSek": 28000,
+            "sampleCount": 22
           }
         ]
       },
@@ -2485,13 +2873,13 @@
       "math": {
         "estimatedPartsSek": 5329,
         "deltaSek": -3429,
-        "minSampleCount": 115,
+        "minSampleCount": 117,
         "components": [
           {
             "type": "RAM",
             "name": "32gb ddr5",
             "medianSek": 5329,
-            "sampleCount": 115
+            "sampleCount": 117
           }
         ]
       },
@@ -2558,90 +2946,6 @@
       }
     },
     {
-      "id": "1058",
-      "title": "SK Hynix DDR5 32GB (2x16GB) 6400MHz SODIMM – Perfekt för hög prestanda & gaming",
-      "priceSek": 2300,
-      "url": "https://www.blocket.se/recommerce/forsale/item/23878373",
-      "category": "RAM",
-      "city": "Solna",
-      "listedAt": "2026-06-07T10:04:07",
-      "condition": "Nytt skick - helt ny",
-      "math": {
-        "estimatedPartsSek": 5329,
-        "deltaSek": -3029,
-        "minSampleCount": 115,
-        "components": [
-          {
-            "type": "RAM",
-            "name": "32gb ddr5",
-            "medianSek": 5329,
-            "sampleCount": 115
-          }
-        ]
-      },
-      "ai": {
-        "summary": "The items are described as unopened and unused. Note that these are SODIMM modules, intended for laptops or small form factor PCs, not standard desktops.",
-        "flags": [],
-        "confidence": 0.9
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [
-            "32 GB system RAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "Nvidia GPU",
-            "12 GB VRAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 2300,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [
-            "16 GB system RAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "8 GB VRAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 2300,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 2300,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
       "id": "1057",
       "title": "Crucial 32GB DDR5-5600 SODIMM",
       "priceSek": 2500,
@@ -2653,13 +2957,13 @@
       "math": {
         "estimatedPartsSek": 5329,
         "deltaSek": -2829,
-        "minSampleCount": 115,
+        "minSampleCount": 117,
         "components": [
           {
             "type": "RAM",
             "name": "32gb ddr5",
             "medianSek": 5329,
-            "sampleCount": 115
+            "sampleCount": 117
           }
         ]
       },
@@ -2898,6 +3202,88 @@
       }
     },
     {
+      "id": "6197",
+      "title": "Grafikkort Intel Arc B580 12GB Limited Edition",
+      "priceSek": 2800,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25595613",
+      "category": "GPU",
+      "city": "Trelleborg",
+      "listedAt": "2026-08-10T18:00:09",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 4450,
+        "deltaSek": -1650,
+        "minSampleCount": 6,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "intel arc b580",
+            "medianSek": 4450,
+            "sampleCount": 6
+          }
+        ]
+      },
+      "ai": {
+        "summary": "A straightforward listing for an Intel Arc B580. The description is clear and provides technical details.",
+        "flags": [],
+        "confidence": 0.9
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM",
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 2800,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM",
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 2800,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 2800,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
       "id": "1086",
       "title": "Kingston FURY Beast DDR5 5600MHz Ram minnen",
       "priceSek": 6000,
@@ -2999,13 +3385,13 @@
       "math": {
         "estimatedPartsSek": 5329,
         "deltaSek": -2329,
-        "minSampleCount": 115,
+        "minSampleCount": 117,
         "components": [
           {
             "type": "RAM",
             "name": "32gb ddr5",
             "medianSek": 5329,
-            "sampleCount": 115
+            "sampleCount": 117
           }
         ]
       },
@@ -3075,90 +3461,6 @@
           "blockedBy": [],
           "upgradeCostSek": 0,
           "effectivePriceSek": 3000,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "12264",
-      "title": "Corsair Vengeance 32GB (2x16GB) / 5200Mhz / DDR5 / CL40 /",
-      "priceSek": 3500,
-      "url": "https://www.blocket.se/recommerce/forsale/item/28062042",
-      "category": "RAM",
-      "city": "Nyhammar",
-      "listedAt": "2026-11-07T19:31:52",
-      "condition": "Mycket bra skick - som ny",
-      "math": {
-        "estimatedPartsSek": 5329,
-        "deltaSek": -1829,
-        "minSampleCount": 115,
-        "components": [
-          {
-            "type": "RAM",
-            "name": "32gb ddr5",
-            "medianSek": 5329,
-            "sampleCount": 115
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [
-            "32 GB system RAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "Nvidia GPU",
-            "12 GB VRAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 3500,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [
-            "16 GB system RAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "8 GB VRAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 3500,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 3500,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -3251,53 +3553,46 @@
       }
     },
     {
-      "id": "10474",
-      "title": "32GB DDR5 5600 SKhynix 2x16GB RAM-minne SODIMM för laptop",
-      "priceSek": 3500,
-      "url": "https://www.blocket.se/recommerce/forsale/item/27576649",
-      "category": "RAM",
-      "city": "Västra Frölunda",
-      "listedAt": "2026-10-20T16:44:05",
-      "condition": "Mycket bra skick - som ny",
+      "id": "6794",
+      "title": "Intel i7 9700K 3.60Ghz LGA-1151",
+      "priceSek": 1300,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25685154",
+      "category": "CPU",
+      "city": "Sandviken",
+      "listedAt": "2026-08-13T18:12:33",
+      "condition": "Bra skick - varsamt använd",
       "math": {
-        "estimatedPartsSek": 5329,
-        "deltaSek": -1829,
-        "minSampleCount": 115,
+        "estimatedPartsSek": 3000,
+        "deltaSek": -1700,
+        "minSampleCount": 4,
         "components": [
           {
-            "type": "RAM",
-            "name": "32gb ddr5",
-            "medianSek": 5329,
-            "sampleCount": 115
+            "type": "CPU",
+            "name": "i7-9700k",
+            "medianSek": 3000,
+            "sampleCount": 4
           }
         ]
       },
       "ai": {
-        "summary": "These are laptop RAM modules (SODIMM), not for desktop PCs. Ensure compatibility before purchase.",
-        "flags": [
-          {
-            "id": "sodimm",
-            "label": "SODIMM",
-            "severity": "warn"
-          }
-        ],
-        "confidence": 0.7
+        "summary": "Clear description of a used processor. The seller notes it was working when last used.",
+        "flags": [],
+        "confidence": 0.8
       },
       "fits": {
         "ai-workstation": {
           "profileId": "ai-workstation",
           "verdict": "unverified",
-          "met": [
-            "32 GB system RAM"
-          ],
+          "met": [],
           "unmet": [],
           "unknown": [
             "Nvidia GPU",
-            "12 GB VRAM"
+            "12 GB VRAM",
+            "32 GB system RAM"
           ],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 3500,
+          "effectivePriceSek": 1300,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
           "metricValue": null,
@@ -3306,16 +3601,15 @@
         "gaming": {
           "profileId": "gaming",
           "verdict": "unverified",
-          "met": [
-            "16 GB system RAM"
-          ],
+          "met": [],
           "unmet": [],
           "unknown": [
-            "8 GB VRAM"
+            "8 GB VRAM",
+            "16 GB system RAM"
           ],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 3500,
+          "effectivePriceSek": 1300,
           "metric": null,
           "metricUnit": null,
           "metricValue": null,
@@ -3332,7 +3626,7 @@
           ],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 3500,
+          "effectivePriceSek": 1300,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -3341,47 +3635,57 @@
       }
     },
     {
-      "id": "11618",
-      "title": "SK Hynix 32GB DDR5 SODIMM RAM 5600 MHz",
-      "priceSek": 3700,
-      "url": "https://www.blocket.se/recommerce/forsale/item/27918592",
-      "category": "RAM",
-      "city": "Tumba",
-      "listedAt": "2026-11-02T15:56:00",
+      "id": "7247",
+      "title": "Intel Arc B580 Limited Edition 12gb grafikkort",
+      "priceSek": 2800,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25767186",
+      "category": "GPU",
+      "city": "Sandarne",
+      "listedAt": "2026-08-16T14:54:18",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 5329,
-        "deltaSek": -1629,
-        "minSampleCount": 115,
+        "estimatedPartsSek": 4450,
+        "deltaSek": -1650,
+        "minSampleCount": 6,
         "components": [
           {
-            "type": "RAM",
-            "name": "32gb ddr5",
-            "medianSek": 5329,
-            "sampleCount": 115
+            "type": "GPU",
+            "name": "intel arc b580",
+            "medianSek": 4450,
+            "sampleCount": 6
           }
         ]
       },
       "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
+        "summary": "The card is described as working well. The missing port covers and damaged box are purely cosmetic and do not affect functionality.",
+        "flags": [
+          {
+            "id": "saknar_portskydd",
+            "label": "saknar portskydd",
+            "severity": "warn"
+          },
+          {
+            "id": "skadad_f_rpackning",
+            "label": "skadad förpackning",
+            "severity": "warn"
+          }
+        ],
+        "confidence": 0.8
       },
       "fits": {
         "ai-workstation": {
           "profileId": "ai-workstation",
           "verdict": "unverified",
-          "met": [
-            "32 GB system RAM"
-          ],
+          "met": [],
           "unmet": [],
           "unknown": [
             "Nvidia GPU",
-            "12 GB VRAM"
+            "12 GB VRAM",
+            "32 GB system RAM"
           ],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 3700,
+          "effectivePriceSek": 2800,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
           "metricValue": null,
@@ -3390,16 +3694,15 @@
         "gaming": {
           "profileId": "gaming",
           "verdict": "unverified",
-          "met": [
-            "16 GB system RAM"
-          ],
+          "met": [],
           "unmet": [],
           "unknown": [
-            "8 GB VRAM"
+            "8 GB VRAM",
+            "16 GB system RAM"
           ],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 3700,
+          "effectivePriceSek": 2800,
           "metric": null,
           "metricUnit": null,
           "metricValue": null,
@@ -3416,7 +3719,7 @@
           ],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 3700,
+          "effectivePriceSek": 2800,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -3499,6 +3802,348 @@
           "blockedBy": [],
           "upgradeCostSek": 0,
           "effectivePriceSek": 3900,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "10485",
+      "title": "Dell KV3H4X 32GB DDR5 CAMM 16GX8 4800Mhz Precision 7670 7680 7770 7780",
+      "priceSek": 3999,
+      "url": "https://www.blocket.se/recommerce/forsale/item/26278978",
+      "category": "RAM",
+      "city": "Bunkeflostrand",
+      "listedAt": "2026-09-03T13:01:01.431000",
+      "condition": "Mycket bra skick - som ny",
+      "math": {
+        "estimatedPartsSek": 5329,
+        "deltaSek": -1330,
+        "minSampleCount": 117,
+        "components": [
+          {
+            "type": "RAM",
+            "name": "32gb ddr5",
+            "medianSek": 5329,
+            "sampleCount": 117
+          }
+        ]
+      },
+      "ai": {
+        "summary": "This is a CAMM module, which is a proprietary form factor used only in specific Dell Precision laptops. Ensure compatibility with your specific machine before purchasing.",
+        "flags": [
+          {
+            "id": "proprietary_form_factor",
+            "label": "proprietary form factor",
+            "severity": "warn"
+          }
+        ],
+        "confidence": 0.9
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "32 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3999,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "16 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3999,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3999,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "10420",
+      "title": "Samsung 16GB kit (2x8GB) DDR5 SO-DIMM 4800MHz till bärbar dator",
+      "priceSek": 1000,
+      "url": "https://www.blocket.se/recommerce/forsale/item/27745928",
+      "category": "RAM",
+      "city": "Göteborg",
+      "listedAt": "2026-10-27T07:02:32",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 2299,
+        "deltaSek": -1299,
+        "minSampleCount": 58,
+        "components": [
+          {
+            "type": "RAM",
+            "name": "16gb ddr5",
+            "medianSek": 2299,
+            "sampleCount": 58
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Clear description of the RAM modules including brand and specifications. Suitable for laptop or mini-PC upgrades.",
+        "flags": [],
+        "confidence": 0.9
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "fits-after-upgrade",
+          "met": [],
+          "unmet": [
+            "32 GB system RAM"
+          ],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 2950,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "16 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 1000,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 1000,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "539",
+      "title": "Crucial DDR5 4800 UDIMM RAM-minne 32GB",
+      "priceSek": 3900,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25160195",
+      "category": "RAM",
+      "city": "Mölnlycke",
+      "listedAt": "2026-07-27T13:08:35",
+      "condition": "Nytt skick - helt ny",
+      "math": {
+        "estimatedPartsSek": 5329,
+        "deltaSek": -1429,
+        "minSampleCount": 117,
+        "components": [
+          {
+            "type": "RAM",
+            "name": "32gb ddr5",
+            "medianSek": 5329,
+            "sampleCount": 117
+          }
+        ]
+      },
+      "ai": {
+        "summary": "RAM sticks sold in original packaging. The price is per stick, which should be noted by the buyer.",
+        "flags": [],
+        "confidence": 0.8
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "32 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3900,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "16 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3900,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3900,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "12236",
+      "title": "Samsung RAM 64 GB DDR4",
+      "priceSek": 3700,
+      "url": "https://www.blocket.se/recommerce/forsale/item/28041797",
+      "category": "RAM",
+      "city": "Bromma",
+      "listedAt": "2026-11-07T10:18:31",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 4950,
+        "deltaSek": -1250,
+        "minSampleCount": 16,
+        "components": [
+          {
+            "type": "RAM",
+            "name": "64gb ddr4",
+            "medianSek": 4950,
+            "sampleCount": 16
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Clear listing for a pair of laptop memory modules with specific model numbers provided.",
+        "flags": [],
+        "confidence": 0.9
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [
+            "32 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3700,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [
+            "16 GB system RAM"
+          ],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3700,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3700,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -3827,6 +4472,94 @@
           "blockedBy": [],
           "upgradeCostSek": 0,
           "effectivePriceSek": 800,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "5116",
+      "title": "Intel Arc B580 Sparkle Guardian grafikkort med 12 GB VRAM",
+      "priceSek": 3000,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25423915",
+      "category": "GPU",
+      "city": "Umeå",
+      "listedAt": "2026-08-05T12:14:09",
+      "condition": "Mycket bra skick - som ny",
+      "math": {
+        "estimatedPartsSek": 4450,
+        "deltaSek": -1450,
+        "minSampleCount": 6,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "intel arc b580",
+            "medianSek": 4450,
+            "sampleCount": 6
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Intel Arc B580 graphics card. The seller bought it second-hand without a receipt, so warranty status is uncertain, though it includes original packaging.",
+        "flags": [
+          {
+            "id": "no_receipt",
+            "label": "no receipt",
+            "severity": "warn"
+          }
+        ],
+        "confidence": 0.6
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM",
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3000,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM",
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3000,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 3000,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -4246,6 +4979,88 @@
       }
     },
     {
+      "id": "7046",
+      "title": "Moderkort & Processor - MSI Z390-A PRO - Intel Core i7 9700K 3.6 GHz 12MB",
+      "priceSek": 2300,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25699564",
+      "category": "CPU",
+      "city": "Johanneshov",
+      "listedAt": "2026-08-14T12:21:26",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 3000,
+        "deltaSek": -700,
+        "minSampleCount": 4,
+        "components": [
+          {
+            "type": "CPU",
+            "name": "i7-9700k",
+            "medianSek": 3000,
+            "sampleCount": 4
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM",
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 2300,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM",
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 2300,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 2300,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
       "id": "12280",
       "title": "Kioxia XG6 1TB (1024GB) M.2 2280 NVMe PCIe SSD",
       "priceSek": 1249,
@@ -4320,88 +5135,6 @@
           "blockedBy": [],
           "upgradeCostSek": 0,
           "effectivePriceSek": 1249,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "12781",
-      "title": "I7 7700k",
-      "priceSek": 500,
-      "url": "https://www.blocket.se/recommerce/forsale/item/28180307",
-      "category": "CPU",
-      "city": "Skanör",
-      "listedAt": "2026-11-12T08:56:15",
-      "condition": "Bra skick - varsamt använd",
-      "math": {
-        "estimatedPartsSek": 1100,
-        "deltaSek": -600,
-        "minSampleCount": 9,
-        "components": [
-          {
-            "type": "CPU",
-            "name": "i7-7700k",
-            "medianSek": 1100,
-            "sampleCount": 9
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "Nvidia GPU",
-            "12 GB VRAM",
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 500,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 500,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 500,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -4488,88 +5221,6 @@
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": 1000.0,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "13149",
-      "title": "CPU amd ryzen 9 7900x",
-      "priceSek": 1999,
-      "url": "https://www.blocket.se/recommerce/forsale/item/28250496",
-      "category": "CPU",
-      "city": "Kungsängen",
-      "listedAt": "2026-11-14T18:18:47",
-      "condition": "Mycket bra skick - som ny",
-      "math": {
-        "estimatedPartsSek": 2500,
-        "deltaSek": -501,
-        "minSampleCount": 4,
-        "components": [
-          {
-            "type": "CPU",
-            "name": "ryzen 9 7900x",
-            "medianSek": 2500,
-            "sampleCount": 4
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "Nvidia GPU",
-            "12 GB VRAM",
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 1999,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 1999,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 1999,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
           "vramCaveat": null
         }
       }
@@ -5417,89 +6068,6 @@
       }
     },
     {
-      "id": "2971",
-      "title": "MSI GeForce GTX 750 Ti grafikkort",
-      "priceSek": 400,
-      "url": "https://www.blocket.se/recommerce/forsale/item/25259216",
-      "category": "GPU",
-      "city": "Bromma",
-      "listedAt": "2026-07-30T19:38:25",
-      "condition": "Bra skick - varsamt använd",
-      "math": {
-        "estimatedPartsSek": 600,
-        "deltaSek": -200,
-        "minSampleCount": 4,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "gtx 750 ti",
-            "medianSek": 600,
-            "sampleCount": 4
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [
-            "Nvidia GPU"
-          ],
-          "unmet": [],
-          "unknown": [
-            "12 GB VRAM",
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 400,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 400,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 400,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
       "id": "12288",
       "title": "1TB NVMe M.2 SSD Samsung Evo Plus",
       "priceSek": 1400,
@@ -5664,89 +6232,6 @@
           "blockedBy": [],
           "upgradeCostSek": 0,
           "effectivePriceSek": 300,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "1890",
-      "title": "ASUS GeForce GTX 760 DirectCU II OC 2GB – Mycket fint skick!",
-      "priceSek": 349,
-      "url": "https://www.blocket.se/recommerce/forsale/item/25262459",
-      "category": "GPU",
-      "city": "Hisings Backa",
-      "listedAt": "2026-07-31T05:37:21",
-      "condition": "Mycket bra skick - som ny",
-      "math": {
-        "estimatedPartsSek": 499,
-        "deltaSek": -150,
-        "minSampleCount": 6,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "gtx 760",
-            "medianSek": 499,
-            "sampleCount": 6
-          }
-        ]
-      },
-      "ai": {
-        "summary": "A well-described, older graphics card. The seller provides the specific model number and confirms it is clean and functional. Suitable for light e-sports titles.",
-        "flags": [],
-        "confidence": 0.9
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [
-            "Nvidia GPU"
-          ],
-          "unmet": [],
-          "unknown": [
-            "12 GB VRAM",
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 349,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 349,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 349,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -5932,14 +6417,14 @@
       }
     },
     {
-      "id": "574",
-      "title": "Intel SSD 1TB, NVMe 3.0 x4, 660p M.2 2280 PCIe  3D2, QLC, SSDPEKNW010T8X1",
+      "id": "4904",
+      "title": "Sony PlayStation 4 spelkonsol med flera PS4-spel",
       "priceSek": 1500,
-      "url": "https://www.blocket.se/recommerce/forsale/item/23974808",
+      "url": "https://www.blocket.se/recommerce/forsale/item/24135684",
       "category": "STORAGE",
-      "city": "Älmhult",
-      "listedAt": "2026-06-10T17:09:22",
-      "condition": "Nytt skick - helt ny",
+      "city": "Göteborg",
+      "listedAt": "2026-06-16T22:38:02",
+      "condition": "Bra skick - varsamt använd",
       "math": {
         "estimatedPartsSek": 1599,
         "deltaSek": -99,
@@ -6433,88 +6918,6 @@
       }
     },
     {
-      "id": "10993",
-      "title": "Gigabyte Z170X Gaming 3 Moderkort",
-      "priceSek": 1500,
-      "url": "https://www.blocket.se/recommerce/forsale/item/27277664",
-      "category": "MOTHERBOARD",
-      "city": "Sundbyberg",
-      "listedAt": "2026-10-09T21:37:08",
-      "condition": "Mycket bra skick - som ny",
-      "math": {
-        "estimatedPartsSek": 1500,
-        "deltaSek": 0,
-        "minSampleCount": 1,
-        "components": [
-          {
-            "type": "MOTHERBOARD",
-            "name": "gigabyte z170x gaming 3",
-            "medianSek": 1500,
-            "sampleCount": 1
-          }
-        ]
-      },
-      "ai": {
-        "summary": "A motherboard listing with very little information. It is described as being in new condition.",
-        "flags": [],
-        "confidence": 0.7
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "Nvidia GPU",
-            "12 GB VRAM",
-            "32 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 1500,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 1500,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 1500,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
       "id": "11010",
       "title": "Asus M2N moderkort AM2 Rev 1.02G",
       "priceSek": 300,
@@ -6860,6 +7263,88 @@
       }
     },
     {
+      "id": "13722",
+      "title": "ASUS TUF Gaming B650-PLUS",
+      "priceSek": 999,
+      "url": "https://www.blocket.se/recommerce/forsale/item/28332910",
+      "category": "MOTHERBOARD",
+      "city": "Halmstad",
+      "listedAt": "2026-11-17T15:10:01",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 999,
+        "deltaSek": 0,
+        "minSampleCount": 1,
+        "components": [
+          {
+            "type": "MOTHERBOARD",
+            "name": "asus tuf gaming b650-plus",
+            "medianSek": 999,
+            "sampleCount": 1
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Standard listing for a used AM5 motherboard. The description is clear and provides necessary technical details.",
+        "flags": [],
+        "confidence": 0.9
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "Nvidia GPU",
+            "12 GB VRAM",
+            "32 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 999,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "8 GB VRAM",
+            "16 GB system RAM"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 999,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "unverified",
+          "met": [],
+          "unmet": [],
+          "unknown": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 999,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": null,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
       "id": "1559",
       "title": "ASUS Z270 ROG MAXIMUS IX HERO",
       "priceSek": 1000,
@@ -7046,15 +7531,15 @@
       "listedAt": "2026-08-13T14:14:24",
       "condition": "Nytt skick - helt ny",
       "math": {
-        "estimatedPartsSek": 4999,
-        "deltaSek": -3999,
-        "minSampleCount": 60,
+        "estimatedPartsSek": 5000,
+        "deltaSek": -4000,
+        "minSampleCount": 63,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 3080",
-            "medianSek": 4999,
-            "sampleCount": 60
+            "medianSek": 5000,
+            "sampleCount": 63
           }
         ]
       },
@@ -7127,95 +7612,6 @@
       }
     },
     {
-      "id": "3060",
-      "title": "Sällsynt Gainward GeForce GTX 660 Ti 2GB – Bra skick!",
-      "priceSek": 349,
-      "url": "https://www.blocket.se/recommerce/forsale/item/25262478",
-      "category": "GPU",
-      "city": "Hisings Backa",
-      "listedAt": "2026-07-31T05:40:22",
-      "condition": "Bra skick - varsamt använd",
-      "math": {
-        "estimatedPartsSek": 499,
-        "deltaSek": -150,
-        "minSampleCount": 4,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "gtx 660 ti",
-            "medianSek": 499,
-            "sampleCount": 4
-          }
-        ]
-      },
-      "ai": {
-        "summary": "A well-described vintage/budget graphics card. The seller is transparent about cosmetic wear.",
-        "flags": [],
-        "confidence": 0.9
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unfit",
-          "met": [
-            "Nvidia GPU"
-          ],
-          "unmet": [
-            "12 GB VRAM"
-          ],
-          "unknown": [
-            "32 GB system RAM"
-          ],
-          "blockedBy": [
-            "12 GB VRAM"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 349,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 174.5,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unfit",
-          "met": [],
-          "unmet": [
-            "8 GB VRAM"
-          ],
-          "unknown": [
-            "16 GB system RAM"
-          ],
-          "blockedBy": [
-            "8 GB VRAM"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 349,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unverified",
-          "met": [],
-          "unmet": [],
-          "unknown": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 349,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
       "id": "10781",
       "title": "Nvidia cmp 90 hx: byte eller betalning",
       "priceSek": 2500,
@@ -7225,15 +7621,15 @@
       "listedAt": "2026-10-30T16:45:59",
       "condition": "Okej skick - synligt använd",
       "math": {
-        "estimatedPartsSek": 4999,
-        "deltaSek": -2499,
-        "minSampleCount": 60,
+        "estimatedPartsSek": 5000,
+        "deltaSek": -2500,
+        "minSampleCount": 63,
         "components": [
           {
             "type": "GPU",
             "name": "rtx 3080",
-            "medianSek": 4999,
-            "sampleCount": 60
+            "medianSek": 5000,
+            "sampleCount": 63
           }
         ]
       },
@@ -7306,24 +7702,24 @@
       }
     },
     {
-      "id": "7288",
-      "title": "ASUS Radeon RX 9070 XT Prime grafikkort",
-      "priceSek": 6770,
-      "url": "https://www.blocket.se/recommerce/forsale/item/25745177",
+      "id": "6435",
+      "title": "Asus Radeon RX 9070 XT Prime OC 16GB (Helt Ny oöppnad)",
+      "priceSek": 7500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/25617823",
       "category": "GPU",
-      "city": "Göteborg",
-      "listedAt": "2026-08-16T03:04:25",
+      "city": "Enskede",
+      "listedAt": "2026-08-11T13:44:56",
       "condition": "Nytt skick - helt ny",
       "math": {
         "estimatedPartsSek": 9500,
-        "deltaSek": -2730,
-        "minSampleCount": 15,
+        "deltaSek": -2000,
+        "minSampleCount": 17,
         "components": [
           {
             "type": "GPU",
             "name": "rx 9070 xt",
             "medianSek": 9500,
-            "sampleCount": 15
+            "sampleCount": 17
           }
         ]
       },
@@ -7349,10 +7745,10 @@
             "Nvidia GPU"
           ],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 6770,
+          "effectivePriceSek": 7500,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 423.125,
+          "metricValue": 468.75,
           "vramCaveat": null
         },
         "gaming": {
@@ -7367,7 +7763,7 @@
           ],
           "blockedBy": [],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 6770,
+          "effectivePriceSek": 7500,
           "metric": null,
           "metricUnit": null,
           "metricValue": null,
@@ -7387,97 +7783,7 @@
             "GPU under 100 W"
           ],
           "upgradeCostSek": 0,
-          "effectivePriceSek": 6770,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": null,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "3025",
-      "title": "RX9070XT grafikkort gpu BrAmd",
-      "priceSek": 6999,
-      "url": "https://www.blocket.se/recommerce/forsale/item/24194185",
-      "category": "GPU",
-      "city": "Huddinge",
-      "listedAt": "2026-06-20T11:24:15",
-      "condition": "Mycket bra skick - som ny",
-      "math": {
-        "estimatedPartsSek": 9500,
-        "deltaSek": -2501,
-        "minSampleCount": 15,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "rx 9070 xt",
-            "medianSek": 9500,
-            "sampleCount": 15
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unfit",
-          "met": [
-            "12 GB VRAM"
-          ],
-          "unmet": [
-            "Nvidia GPU"
-          ],
-          "unknown": [
-            "32 GB system RAM"
-          ],
-          "blockedBy": [
-            "Nvidia GPU"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6999,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 437.4375,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unverified",
-          "met": [
-            "8 GB VRAM"
-          ],
-          "unmet": [],
-          "unknown": [
-            "16 GB system RAM"
-          ],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6999,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unfit",
-          "met": [],
-          "unmet": [
-            "GPU under 100 W"
-          ],
-          "unknown": [
-            "1 TB storage"
-          ],
-          "blockedBy": [
-            "GPU under 100 W"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 6999,
+          "effectivePriceSek": 7500,
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": null,
@@ -7495,15 +7801,15 @@
       "listedAt": "2026-09-11T09:33:25.654000",
       "condition": "Bra skick - varsamt använd",
       "math": {
-        "estimatedPartsSek": 13850,
-        "deltaSek": -7855,
+        "estimatedPartsSek": 13950,
+        "deltaSek": -7955,
         "minSampleCount": 1,
         "components": [
           {
             "type": "GPU",
             "name": "gtx 1080",
-            "medianSek": 1100,
-            "sampleCount": 24
+            "medianSek": 1200,
+            "sampleCount": 26
           },
           {
             "type": "CPU",
@@ -7725,7 +8031,7 @@
             "type": "GPU",
             "name": "rtx 2070 super",
             "medianSek": 2000,
-            "sampleCount": 15
+            "sampleCount": 16
           },
           {
             "type": "CPU",
@@ -7819,6 +8125,123 @@
       }
     },
     {
+      "id": "1278",
+      "title": "Speldator Windows 11 i5/8GB/SSD",
+      "priceSek": 1500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/21105820",
+      "category": "FULL_BUILD",
+      "city": "Malmö",
+      "listedAt": "2026-06-29T07:26:53",
+      "condition": "Bra skick - varsamt använd",
+      "math": {
+        "estimatedPartsSek": 1835,
+        "deltaSek": -335,
+        "minSampleCount": 1,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "gtx 1050 ti",
+            "medianSek": 500,
+            "sampleCount": 21
+          },
+          {
+            "type": "CPU",
+            "name": "i5-4570",
+            "medianSek": 695,
+            "sampleCount": 2
+          },
+          {
+            "type": "STORAGE",
+            "name": "120gb ssd",
+            "medianSek": null,
+            "sampleCount": 0
+          },
+          {
+            "type": "STORAGE",
+            "name": "1tb hdd",
+            "medianSek": 300,
+            "sampleCount": 1
+          },
+          {
+            "type": "PSU",
+            "name": "680w psu",
+            "medianSek": null,
+            "sampleCount": 0
+          },
+          {
+            "type": "RAM",
+            "name": "8gb ddr3",
+            "medianSek": 340,
+            "sampleCount": 7
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unfit",
+          "met": [
+            "Nvidia GPU"
+          ],
+          "unmet": [
+            "12 GB VRAM",
+            "32 GB system RAM"
+          ],
+          "unknown": [],
+          "blockedBy": [
+            "12 GB VRAM"
+          ],
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 3450,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 862.5,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "8 GB VRAM",
+            "16 GB system RAM"
+          ],
+          "unknown": [],
+          "blockedBy": [
+            "8 GB VRAM"
+          ],
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 3450,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "fits",
+          "met": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "unmet": [],
+          "unknown": [],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 1500,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": 1339.2857142857142,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
       "id": "729",
       "title": "Gaming dator RTX 2070 / 2.5TB SSD / Win 11 Pro",
       "priceSek": 6995,
@@ -7828,8 +8251,8 @@
       "listedAt": "2026-07-29T19:25:03",
       "condition": "Bra skick - varsamt använd",
       "math": {
-        "estimatedPartsSek": 12444,
-        "deltaSek": -5449,
+        "estimatedPartsSek": 12394,
+        "deltaSek": -5399,
         "minSampleCount": 2,
         "components": [
           {
@@ -7847,8 +8270,8 @@
           {
             "type": "RAM",
             "name": "32gb ddr4",
-            "medianSek": 2000,
-            "sampleCount": 162
+            "medianSek": 1950,
+            "sampleCount": 166
           },
           {
             "type": "STORAGE",
@@ -7966,7 +8389,7 @@
             "type": "GPU",
             "name": "gtx 1650",
             "medianSek": 700,
-            "sampleCount": 22
+            "sampleCount": 23
           },
           {
             "type": "CPU",
@@ -8080,123 +8503,6 @@
       }
     },
     {
-      "id": "1278",
-      "title": "Speldator Windows 11 i5/8GB/SSD",
-      "priceSek": 1500,
-      "url": "https://www.blocket.se/recommerce/forsale/item/21105820",
-      "category": "FULL_BUILD",
-      "city": "Malmö",
-      "listedAt": "2026-06-29T07:26:53",
-      "condition": "Bra skick - varsamt använd",
-      "math": {
-        "estimatedPartsSek": 1835,
-        "deltaSek": -335,
-        "minSampleCount": 1,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "gtx 1050 ti",
-            "medianSek": 500,
-            "sampleCount": 21
-          },
-          {
-            "type": "CPU",
-            "name": "i5-4570",
-            "medianSek": 695,
-            "sampleCount": 2
-          },
-          {
-            "type": "STORAGE",
-            "name": "120gb ssd",
-            "medianSek": null,
-            "sampleCount": 0
-          },
-          {
-            "type": "STORAGE",
-            "name": "1tb hdd",
-            "medianSek": 300,
-            "sampleCount": 1
-          },
-          {
-            "type": "PSU",
-            "name": "680w psu",
-            "medianSek": null,
-            "sampleCount": 0
-          },
-          {
-            "type": "RAM",
-            "name": "8gb ddr3",
-            "medianSek": 340,
-            "sampleCount": 7
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unfit",
-          "met": [
-            "Nvidia GPU"
-          ],
-          "unmet": [
-            "12 GB VRAM",
-            "32 GB system RAM"
-          ],
-          "unknown": [],
-          "blockedBy": [
-            "12 GB VRAM"
-          ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 3500,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 875.0,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unfit",
-          "met": [],
-          "unmet": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "unknown": [],
-          "blockedBy": [
-            "8 GB VRAM"
-          ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 3500,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "fits",
-          "met": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "unmet": [],
-          "unknown": [],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 1500,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": 1339.2857142857142,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
       "id": "8854",
       "title": "Gamingdator Ryzen 5 5500 / RX 6600 XT / 32GB RAM / 1,8TB SSD",
       "priceSek": 7500,
@@ -8206,8 +8512,8 @@
       "listedAt": "2026-10-07T09:18:05",
       "condition": "Mycket bra skick - som ny",
       "math": {
-        "estimatedPartsSek": 17400,
-        "deltaSek": -9900,
+        "estimatedPartsSek": 17350,
+        "deltaSek": -9850,
         "minSampleCount": 2,
         "components": [
           {
@@ -8225,8 +8531,8 @@
           {
             "type": "RAM",
             "name": "32gb ddr4",
-            "medianSek": 2000,
-            "sampleCount": 162
+            "medianSek": 1950,
+            "sampleCount": 166
           },
           {
             "type": "STORAGE",
@@ -8327,7 +8633,7 @@
             "type": "GPU",
             "name": "gtx 1650",
             "medianSek": 700,
-            "sampleCount": 22
+            "sampleCount": 23
           },
           {
             "type": "STORAGE",
@@ -8428,7 +8734,7 @@
             "type": "GPU",
             "name": "gtx 1650",
             "medianSek": 700,
-            "sampleCount": 22
+            "sampleCount": 23
           },
           {
             "type": "RAM",
@@ -8492,11 +8798,11 @@
           "blockedBy": [
             "12 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 5000,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 4950,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 1250.0,
+          "metricValue": 1237.5,
           "vramCaveat": null
         },
         "gaming": {
@@ -8511,8 +8817,8 @@
           "blockedBy": [
             "8 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 5000,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 4950,
           "metric": null,
           "metricUnit": null,
           "metricValue": null,
@@ -8533,241 +8839,6 @@
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": 3000.0,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "8010",
-      "title": "🎮🔥 Gaming-PC – RTX 3080 10GB | Ryzen 9 5900X | 64GB | 3TB NVMe",
-      "priceSek": 13000,
-      "url": "https://www.blocket.se/recommerce/forsale/item/26465047",
-      "category": "FULL_BUILD",
-      "city": "Skogås",
-      "listedAt": "2026-09-09T21:20:20",
-      "condition": null,
-      "math": {
-        "estimatedPartsSek": 18043,
-        "deltaSek": -5043,
-        "minSampleCount": 1,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "rtx 3080",
-            "medianSek": 4999,
-            "sampleCount": 60
-          },
-          {
-            "type": "CPU",
-            "name": "ryzen 9 5900x",
-            "medianSek": 2800,
-            "sampleCount": 3
-          },
-          {
-            "type": "RAM",
-            "name": "64gb ddr4",
-            "medianSek": 4950,
-            "sampleCount": 16
-          },
-          {
-            "type": "STORAGE",
-            "name": "3tb ssd",
-            "medianSek": null,
-            "sampleCount": 0
-          },
-          {
-            "type": "STORAGE",
-            "name": "1tb ssd",
-            "medianSek": 1599,
-            "sampleCount": 71
-          },
-          {
-            "type": "STORAGE",
-            "name": "2tb ssd",
-            "medianSek": 2795,
-            "sampleCount": 34
-          },
-          {
-            "type": "PSU",
-            "name": "800w psu",
-            "medianSek": 900,
-            "sampleCount": 1
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unfit",
-          "met": [
-            "Nvidia GPU",
-            "32 GB system RAM"
-          ],
-          "unmet": [
-            "12 GB VRAM"
-          ],
-          "unknown": [],
-          "blockedBy": [
-            "12 GB VRAM"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 13000,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 1300.0,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "fits",
-          "met": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "unmet": [],
-          "unknown": [],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 13000,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "unfit",
-          "met": [
-            "1 TB storage"
-          ],
-          "unmet": [
-            "GPU under 100 W"
-          ],
-          "unknown": [],
-          "blockedBy": [
-            "GPU under 100 W"
-          ],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 13000,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": 2166.6666666666665,
-          "vramCaveat": null
-        }
-      }
-    },
-    {
-      "id": "10685",
-      "title": "Gaming PC – GTX 1050 Ti / i3 / 8GB RAM / 1TB HDD",
-      "priceSek": 3800,
-      "url": "https://www.blocket.se/recommerce/forsale/item/17925396",
-      "category": "FULL_BUILD",
-      "city": "Stockholm",
-      "listedAt": "2026-10-29T06:30:12",
-      "condition": "Bra skick - varsamt använd",
-      "math": {
-        "estimatedPartsSek": 4300,
-        "deltaSek": -500,
-        "minSampleCount": 1,
-        "components": [
-          {
-            "type": "GPU",
-            "name": "gtx 1050 ti",
-            "medianSek": 500,
-            "sampleCount": 21
-          },
-          {
-            "type": "CPU",
-            "name": "i3-7100",
-            "medianSek": 400,
-            "sampleCount": 1
-          },
-          {
-            "type": "RAM",
-            "name": "8gb ddr4",
-            "medianSek": 600,
-            "sampleCount": 21
-          },
-          {
-            "type": "STORAGE",
-            "name": "1tb hdd",
-            "medianSek": 300,
-            "sampleCount": 1
-          },
-          {
-            "type": "PSU",
-            "name": "400w psu",
-            "medianSek": 2500,
-            "sampleCount": 2
-          }
-        ]
-      },
-      "ai": {
-        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
-        "flags": [],
-        "confidence": 0.75
-      },
-      "fits": {
-        "ai-workstation": {
-          "profileId": "ai-workstation",
-          "verdict": "unfit",
-          "met": [
-            "Nvidia GPU"
-          ],
-          "unmet": [
-            "12 GB VRAM",
-            "32 GB system RAM"
-          ],
-          "unknown": [],
-          "blockedBy": [
-            "12 GB VRAM"
-          ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 5800,
-          "metric": "VRAM cost",
-          "metricUnit": "kr/GB VRAM",
-          "metricValue": 1450.0,
-          "vramCaveat": null
-        },
-        "gaming": {
-          "profileId": "gaming",
-          "verdict": "unfit",
-          "met": [],
-          "unmet": [
-            "8 GB VRAM",
-            "16 GB system RAM"
-          ],
-          "unknown": [],
-          "blockedBy": [
-            "8 GB VRAM"
-          ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 5800,
-          "metric": null,
-          "metricUnit": null,
-          "metricValue": null,
-          "vramCaveat": null
-        },
-        "home-server": {
-          "profileId": "home-server",
-          "verdict": "fits",
-          "met": [
-            "1 TB storage",
-            "GPU under 100 W"
-          ],
-          "unmet": [],
-          "unknown": [],
-          "blockedBy": [],
-          "upgradeCostSek": 0,
-          "effectivePriceSek": 3800,
-          "metric": "Storage cost",
-          "metricUnit": "kr/TB",
-          "metricValue": 3800.0,
           "vramCaveat": null
         }
       }
@@ -8897,7 +8968,7 @@
             "type": "GPU",
             "name": "gtx 1650",
             "medianSek": 700,
-            "sampleCount": 22
+            "sampleCount": 23
           },
           {
             "type": "CPU",
@@ -8939,11 +9010,11 @@
           "blockedBy": [
             "12 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 5900,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 5850,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 1475.0,
+          "metricValue": 1462.5,
           "vramCaveat": null
         },
         "gaming": {
@@ -8958,8 +9029,8 @@
           "blockedBy": [
             "8 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 5900,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 5850,
           "metric": null,
           "metricUnit": null,
           "metricValue": null,
@@ -9008,13 +9079,13 @@
             "type": "GPU",
             "name": "gtx 1650",
             "medianSek": 700,
-            "sampleCount": 22
+            "sampleCount": 23
           },
           {
             "type": "RAM",
             "name": "16gb ddr4",
             "medianSek": 1199,
-            "sampleCount": 290
+            "sampleCount": 296
           },
           {
             "type": "STORAGE",
@@ -9044,11 +9115,11 @@
           "blockedBy": [
             "12 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 6000,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 5950,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 1500.0,
+          "metricValue": 1487.5,
           "vramCaveat": null
         },
         "gaming": {
@@ -9120,7 +9191,7 @@
             "type": "RAM",
             "name": "16gb ddr4",
             "medianSek": 1199,
-            "sampleCount": 290
+            "sampleCount": 296
           },
           {
             "type": "STORAGE",
@@ -9150,11 +9221,11 @@
             "Nvidia GPU",
             "12 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 6250,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 6200,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 1562.5,
+          "metricValue": 1550.0,
           "vramCaveat": null
         },
         "gaming": {
@@ -9214,7 +9285,7 @@
             "type": "GPU",
             "name": "gtx 1650",
             "medianSek": 700,
-            "sampleCount": 22
+            "sampleCount": 23
           },
           {
             "type": "CPU",
@@ -9262,11 +9333,11 @@
           "blockedBy": [
             "12 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 6250,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 6200,
           "metric": "VRAM cost",
           "metricUnit": "kr/GB VRAM",
-          "metricValue": 1562.5,
+          "metricValue": 1550.0,
           "vramCaveat": null
         },
         "gaming": {
@@ -9281,8 +9352,8 @@
           "blockedBy": [
             "8 GB VRAM"
           ],
-          "upgradeCostSek": 2000,
-          "effectivePriceSek": 6250,
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 6200,
           "metric": null,
           "metricUnit": null,
           "metricValue": null,
@@ -9303,6 +9374,117 @@
           "metric": "Storage cost",
           "metricUnit": "kr/TB",
           "metricValue": 515.1515151515151,
+          "vramCaveat": null
+        }
+      }
+    },
+    {
+      "id": "13747",
+      "title": "Komplett Gaming Paket - Gaming Dator + Skärm + Keybaord + Mus+ Musmatra",
+      "priceSek": 4500,
+      "url": "https://www.blocket.se/recommerce/forsale/item/28322324",
+      "category": "FULL_BUILD",
+      "city": "Sollentuna",
+      "listedAt": "2026-11-17T08:42:08",
+      "condition": "Mycket bra skick - som ny",
+      "math": {
+        "estimatedPartsSek": 1300,
+        "deltaSek": 3200,
+        "minSampleCount": 21,
+        "components": [
+          {
+            "type": "GPU",
+            "name": "gtx 1650",
+            "medianSek": 700,
+            "sampleCount": 23
+          },
+          {
+            "type": "CPU",
+            "name": "ryzen 5 4600g",
+            "medianSek": null,
+            "sampleCount": 0
+          },
+          {
+            "type": "RAM",
+            "name": "8gb ddr4",
+            "medianSek": 600,
+            "sampleCount": 21
+          },
+          {
+            "type": "STORAGE",
+            "name": "8tb hdd",
+            "medianSek": null,
+            "sampleCount": 0
+          },
+          {
+            "type": "STORAGE",
+            "name": "250gb ssd",
+            "medianSek": null,
+            "sampleCount": 0
+          }
+        ]
+      },
+      "ai": {
+        "summary": "Specs read directly from the listing text by pattern matching; no risk language found. Not reviewed by a model.",
+        "flags": [],
+        "confidence": 0.75
+      },
+      "fits": {
+        "ai-workstation": {
+          "profileId": "ai-workstation",
+          "verdict": "unfit",
+          "met": [
+            "Nvidia GPU"
+          ],
+          "unmet": [
+            "12 GB VRAM",
+            "32 GB system RAM"
+          ],
+          "unknown": [],
+          "blockedBy": [
+            "12 GB VRAM"
+          ],
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 6450,
+          "metric": "VRAM cost",
+          "metricUnit": "kr/GB VRAM",
+          "metricValue": 1612.5,
+          "vramCaveat": null
+        },
+        "gaming": {
+          "profileId": "gaming",
+          "verdict": "unfit",
+          "met": [],
+          "unmet": [
+            "8 GB VRAM",
+            "16 GB system RAM"
+          ],
+          "unknown": [],
+          "blockedBy": [
+            "8 GB VRAM"
+          ],
+          "upgradeCostSek": 1950,
+          "effectivePriceSek": 6450,
+          "metric": null,
+          "metricUnit": null,
+          "metricValue": null,
+          "vramCaveat": null
+        },
+        "home-server": {
+          "profileId": "home-server",
+          "verdict": "fits",
+          "met": [
+            "1 TB storage",
+            "GPU under 100 W"
+          ],
+          "unmet": [],
+          "unknown": [],
+          "blockedBy": [],
+          "upgradeCostSek": 0,
+          "effectivePriceSek": 4500,
+          "metric": "Storage cost",
+          "metricUnit": "kr/TB",
+          "metricValue": 545.4545454545455,
           "vramCaveat": null
         }
       }
@@ -9375,7 +9557,7 @@
   "baskets": {
     "ai-workstation": {
       "profileId": "ai-workstation",
-      "totalSek": 1699,
+      "totalSek": 1750,
       "sellerCount": 4,
       "isComplete": true,
       "missingSlots": [],
@@ -9411,20 +9593,20 @@
         },
         {
           "slot": "STORAGE",
-          "name": "256gb ssd",
-          "priceSek": 449,
-          "title": "256gb ssd nvme snabb gen 4, för laptopp eller stationär",
-          "city": "Hägersten",
-          "url": "https://www.blocket.se/recommerce/forsale/item/25529663"
+          "name": "240gb ssd",
+          "priceSek": 500,
+          "title": "HyperX Predator 240GB M.2 PCIe SSD SHPM2280P2/240G",
+          "city": "Stockholm",
+          "url": "https://www.blocket.se/recommerce/forsale/item/27922109"
         }
       ],
       "bestPrebuiltId": "289",
       "bestPrebuiltPriceSek": 395,
-      "savingSek": -1304
+      "savingSek": -1355
     },
     "gaming": {
       "profileId": "gaming",
-      "totalSek": 1449,
+      "totalSek": 1500,
       "sellerCount": 4,
       "isComplete": true,
       "missingSlots": [],
@@ -9460,16 +9642,16 @@
         },
         {
           "slot": "STORAGE",
-          "name": "256gb ssd",
-          "priceSek": 449,
-          "title": "256gb ssd nvme snabb gen 4, för laptopp eller stationär",
-          "city": "Hägersten",
-          "url": "https://www.blocket.se/recommerce/forsale/item/25529663"
+          "name": "240gb ssd",
+          "priceSek": 500,
+          "title": "HyperX Predator 240GB M.2 PCIe SSD SHPM2280P2/240G",
+          "city": "Stockholm",
+          "url": "https://www.blocket.se/recommerce/forsale/item/27922109"
         }
       ],
       "bestPrebuiltId": "289",
       "bestPrebuiltPriceSek": 395,
-      "savingSek": -1054
+      "savingSek": -1105
     },
     "home-server": {
       "profileId": "home-server",
